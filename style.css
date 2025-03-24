@@ -125,6 +125,12 @@
             box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
         }
 
+        .input-lembre, .input-imc {
+            display: flex;
+            gap: 15px;
+            color: #dc3545;
+        }
+
         input,
         button {
             width: 90%;
@@ -329,6 +335,14 @@
             /* Espaçamento entre o rótulo e o campo de entrada */
         }
 
+        .botao-resultado, .botao-calcular {
+            width: 40%;
+        }
+
+        label { 
+            color: #868686;
+        }
+
         .meta-container label {
             margin: 0;
             color: #999;
@@ -336,6 +350,21 @@
 
         .meta-container input {
             flex: 1;
+        }
+        .result {
+            font-size: 18px;
+        }
+        .quiz-p {
+            margin-bottom: 30px;
+        }
+        #question1, #question2 {
+            width: 40%;
+            padding: 10px;
+            border: 1px solid #f8a025;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: all 0.3s ease-in-out;
+            margin: 10px 0 20px;
         }
 
         input {
@@ -474,4 +503,3 @@
             border: 1px solid #e6e3e333;
             width: 180px;
         }
-    

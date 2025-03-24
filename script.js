@@ -250,3 +250,21 @@ function shareTwitter() {
     const text = encodeURIComponent("Confira este site incrível!");
     window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, '_blank');
 }
+
+// QUIZ
+function calculateResult() {
+    const question1 = document.getElementById('question1').value;
+    const question2 = document.getElementById('question2').value;
+
+    let resultMessage = "";
+
+    if (question1 === "triste" || question2 === "lembrancas") {
+        resultMessage = "Você parece sentir um pouco de saudade. Que tal ouvir uma música que te reconforte ou escrever sobre suas memórias?";
+    } else if (question1 === "animado") {
+        resultMessage = "Você está em alta energia! Aproveite para fazer algo que você ama.";
+    } else {
+        resultMessage = "Que tal tirar um tempo para relaxar e cuidar do seu bem-estar?";
+    }
+
+    document.getElementById('result').innerText = resultMessage;
+}
