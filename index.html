@@ -90,19 +90,15 @@
         <div class="box">
         <div class="quiz-container">
             <h2>Quiz de Emoções</h2>
-            <div class="quiz-p">
-            <p>Responda para descobrir como você está se sentindo hoje!</p>
-        </div>
-            </div>
-            <div id="quiz">
+            <p>Como você está se sentindo hoje?</p>
                 <div>
-                    <label>Como você está se sentindo hoje?</label><br>
-                    <select id="question1">
-                        <option value="animado">Animado</option>
-                        <option value="neutro">Neutro</option>
-                        <option value="cansado">Cansado</option>
-                        <option value="triste">Triste</option>
-                    </select>
+                    <img src="animado.png" alt="Animado" class="emoji" onclick="calculateResult('animado')">
+                    <img src="neutro.png" alt="Neutro" class="emoji" onclick="calculateResult('neutro')">
+                    <img src="cansado.png" alt="Cansado" class="emoji" onclick="calculateResult('cansado')">
+                    <img src="triste.png" alt="Triste" class="emoji" onclick="calculateResult('triste')">
+                
+                <div>
+                   
                 </div>
                 <div style="display: none;">
                     <label>O que ocupa seus pensamentos ultimamente?</label><br>
@@ -113,7 +109,6 @@
                         <option value="lembrancas">Lembranças do passado</option>
                     </select>
                 </div>
-                <button style="width: 40%;" onclick="calculateResult()">Ver Resultado</button>
             </div>
             <p id="result" style="font-size: 16px; font-style: italic;"></p>
         </div>
