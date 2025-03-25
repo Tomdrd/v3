@@ -125,10 +125,16 @@
             box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
         }
 
-        .input-lembre, .input-imc {
-            display: flex;
-            gap: 15px;
+        .input-imc {
+            width: 100%;
+            display: inline-block;
+            gap: 10px;
             color: #dc3545;
+        }
+
+        .input-lembre {
+            display: inline-block;
+            gap: 10px;
         }
 
         input,
@@ -335,8 +341,8 @@
             /* Espaçamento entre o rótulo e o campo de entrada */
         }
 
-        .botao-resultado, .botao-calcular {
-            width: 40%;
+        .botao-resultado, .botao-calcular, .botao-quiz {
+            width: 60%;
         }
 
         label { 
@@ -358,7 +364,7 @@
             margin-bottom: 30px;
         }
         #question1, #question2 {
-            width: 40%;
+            width: 95%;
             padding: 10px;
             border: 1px solid #f8a025;
             border-radius: 5px;
@@ -502,4 +508,9 @@
         .classificacao {
             border: 1px solid #e6e3e333;
             width: 180px;
+        }
+        .emoji {
+            width: 32px;
+            cursor: pointer;
+            margin: 10px;
         }

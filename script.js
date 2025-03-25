@@ -252,18 +252,17 @@ function shareTwitter() {
 }
 
 // QUIZ
-function calculateResult() {
-    const question1 = document.getElementById('question1').value;
-    const question2 = document.getElementById('question2').value;
-
+function calculateResult(feeling) {
     let resultMessage = "";
 
-    if (question1 === "triste" || question2 === "lembrancas") {
+    if (feeling === "triste") {
         resultMessage = "Você parece sentir um pouco de saudade. Que tal ouvir uma música que te reconforte ou escrever sobre suas memórias?";
-    } else if (question1 === "animado") {
+    } else if (feeling === "animado") {
         resultMessage = "Você está em alta energia! Aproveite para fazer algo que você ama.";
+    } else if (feeling === "cansado") {
+        resultMessage = "Você pode estar precisando de um descanso. Tire um tempo para relaxar!";
     } else {
-        resultMessage = "Que tal tirar um tempo para relaxar e cuidar do seu bem-estar?";
+        resultMessage = "Que tal tirar um tempo para cuidar do seu bem-estar?";
     }
 
     document.getElementById('result').innerText = resultMessage;
