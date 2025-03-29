@@ -250,7 +250,6 @@ function shareTwitter() {
     const text = encodeURIComponent("Confira este site incrível!");
     window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, '_blank');
 }
-
 // QUIZ
 function calculateResult(feeling) {
     let resultMessage = "";
@@ -267,3 +266,47 @@ function calculateResult(feeling) {
 
     document.getElementById('result').innerText = resultMessage;
 }
+
+// CALORIAS
+
+function calcularGastoCalorico() {
+    const idade = parseInt(document.getElementById('idade-calorias').value.trim());
+    const peso = parseFloat(document.getElementById('peso-calorias').value.trim());
+    const altura = parseFloat(document.getElementById('altura-calorias').value.trim());
+    const sexo = document.getElementById('sexo-calorias').value;
+    const atividade = parseFloat(document.getElementById('atividade-calorias').value);
+
+    // Verificar se os valores são válidos
+    if (isNaN(idade) || idade <= 0) {
+        document.getElementById('resultado-calorias').innerText = "Por favor, insira uma idade válida.";
+        return;
+    }
+    if (isNaN(peso) || peso <= 0) {
+        document.getElementById('resultado-calorias').innerText = "Por favor, insira um peso válido.";
+        return;
+    }
+    if (isNaN(altura) || altura <= 0) {
+        document.getElementById('resultado-calorias').innerText = "Por favor, insira uma altura válida.";
+        return;
+    }
+    if (isNaN(atividade) || atividade <= 0) {
+        document.getElementById('resultado-calorias').innerText = "Por favor, selecione um nível de atividade válido.";
+        return;
+    }
+
+    // Calcular a Taxa Metabólica Basal (TMB)
+    let taxaMetabolicaBasal;
+    if (sexo === "masculino") {
+        taxaMetabolicaBasal = (10 * peso) + (6.25 * altura) - (5 * idade) + 5;
+    } else {
+        taxaMetabolicaBasal = (10 * peso) + (6.25 * altura) - (5 * idade) - 161;
+    }
+
+    // Calcular o gasto calórico total
+    const gastoCaloricoTotal = taxaMetabolicaBasal * atividade;
+
+    // Exibir o resultado
+    document.getElementById('resultado-calorias').innerText = `Seu gasto calórico diário é aproximadamente ${gastoCaloricoTotal.toFixed(2)} calorias.`;
+}
+
+

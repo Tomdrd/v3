@@ -117,7 +117,7 @@
             padding: 20px;
         }
 
-        .box {
+        .box, .box2 {
             margin: 20px 0;
             padding: 15px;
             border: 1px solid #e6e3e333;
@@ -514,3 +514,16 @@
             cursor: pointer;
             margin: 10px;
         }
+        .selecionar {
+           margin: 20px 0 20px;
+           display: inline-block;
+        }
+.selecionar select {
+        margin-left: 10px; /* Espaçamento entre os elementos */
+        padding: 10px;
+        border: 1px solid #f8a025;
+        border-radius: 5px;
+        font-size: 16px;
+        transition: all 0.3s ease-in-out;
+        }
+        

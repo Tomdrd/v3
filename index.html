@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,6 +18,7 @@
     <link rel="stylesheet" href="style.css">
     <title>Estética e Saúde Academia</title>
 </head>
+
 <body>
     <header>
         <img src="logo.png" alt="Logo">
@@ -26,7 +28,7 @@
         </nav>
     </header>
 
-    <div class="container">
+    <div class="container"> <!-- IMPORTANTE Abraça todo mundo-->
 
         <!-- Frase do Dia -->
         <div class="box">
@@ -39,8 +41,9 @@
             <h2>Calculadora de IMC</h2>
             <p> Saiba como está o seu indice de massa corporal:</p>
             <div class="input-imc">
-            <input type="number" id="peso" placeholder="Peso (kg)">
-            <input type="number" id="altura" placeholder="Altura (cm)"></div>
+                <input type="number" id="peso" placeholder="Peso (kg)">
+                <input type="number" id="altura" placeholder="Altura (cm)">
+            </div>
             <br>
             <button class="botao-calcular" onclick="calcularIMC()">Calcular</button>
             <p id="resultadoIMC"></p>
@@ -56,7 +59,7 @@
                     oninput="validarNumero()">
             </div>
 
-           
+
 
             <p style="display: none;">Consumido: <span id="agua-total">0</span>ml</p>
             <div class="progress-container">
@@ -74,84 +77,114 @@
                 <button onclick="resetarAgua()">Resetar</button>
             </div>
         </div>
-        <!-- Beba agua-->
+        <!-- Beba agua -->
         <div class="box">
             <h2>Lembre-se de beber água</h2>
             <p>Defina o tempo para receber a notificação:</p>
             <div class="input-lembre">
-            <label><input type="number" id="horas" min="0" placeholder="Horas"></label>
-            <label><input type="number" id="minutos" min="0" placeholder=" Minutos"></label>
-            <label><input type="number" id="segundos" min="0" placeholder="Segundos"></label></div>
+                <label><input type="number" id="horas" min="0" placeholder="Horas"></label>
+                <label><input type="number" id="minutos" min="0" placeholder=" Minutos"></label>
+                <label><input type="number" id="segundos" min="0" placeholder="Segundos"></label>
+            </div>
             <br>
             <button class="botao-resultado" onclick="agendarNotificacao()">Agendar</button>
-        </div><!-- FIM Beba agua-->
-        
-        <!-- QUIZ-->
-        <div class="box">
-        <div class="quiz-container">
-            <h2>Quiz de Emoções</h2>
-            <p>Como você está se sentindo hoje?</p>
-                <div>
-                    <img src="animado.png" alt="Animado" class="emoji" onclick="calculateResult('animado')">
-                    <img src="neutro.png" alt="Neutro" class="emoji" onclick="calculateResult('neutro')">
-                    <img src="cansado.png" alt="Cansado" class="emoji" onclick="calculateResult('cansado')">
-                    <img src="triste.png" alt="Triste" class="emoji" onclick="calculateResult('triste')">
-                
-                <div>
-                   
-                </div>
-                <div style="display: none;">
-                    <label>O que ocupa seus pensamentos ultimamente?</label><br>
-                    <select id="question2">
-                        <option value="futuro">Futuro</option>
-                        <option value="familia">Família</option>
-                        <option value="trabalho">Trabalho</option>
-                        <option value="lembrancas">Lembranças do passado</option>
+        </div><!-- FIM Beba agua -->
+        <!-- Calorias -->
+        <!-- Calculadora de Gasto Calórico -->
+        <div class="box2">
+            <h2>Calculadora de Gasto Calórico</h2>
+            <form id="calculoForm">
+                <input type="number" id="idade-calorias" placeholder="Idade" required>
+                <input type="number" id="peso-calorias" placeholder="Peso (kg)" required>
+                <input type="number" id="altura-calorias" placeholder="Altura (cm)" required>
+                <div class="selecionar">
+                    <select id="sexo-calorias">
+                        <option value="masculino">Masculino</option>
+                        <option value="feminino">Feminino</option>
+                    </select>
+                    <select id="atividade-calorias">
+                        <option value="1.2">Sedentário</option>
+                        <option value="1.375">Levemente ativo</option>
+                        <option value="1.55">Moderadamente ativo</option>
+                        <option value="1.725">Altamente ativo</option>
+                        <option value="1.9">Extremamente ativo</option>
                     </select>
                 </div>
-            </div>
-            <p id="result" style="font-size: 16px; font-style: italic;"></p>
+                <button class="botao-resultado" type="button" onclick="calcularGastoCalorico()">Calcular</button>
+            </form>
+            <p id="resultado-calorias"></p>
         </div>
-        </div>
-<!-- FIM DO QUIZ-->    
+        <!-- FIM Calorias -->
+        <!-- QUIZ-->
+        <div class="box">
+            <div class="quiz-container">
+                <h2>Quiz de Emoções</h2>
+                <p>Como você está se sentindo hoje?</p>
+                <div>
+                    <img src="animado.png" alt="Animado" class="emoji" title="Estou animado!" onclick="calculateResult('animado')">
+                    <img src="neutro.png" alt="Neutro" class="emoji" title="Estou neutro." onclick="calculateResult('neutro')">
+                    <img src="cansado.png" alt="Cansado" class="emoji" title="Estou cansado." onclick="calculateResult('cansado')">
+                    <img src="triste.png" alt="Triste" class="emoji" title="Estou triste." onclick="calculateResult('triste')">
 
-<div class="share-buttons">
-    <p>Compartilhe:</p>
-    <button class="share-button whatsapp" onclick="shareWhatsApp()">
-        <img src="whatsapp.png" alt="WhatsApp" width="20" height="20">
-    </button>
-    <button class="share-button facebook" onclick="shareFacebook()">
-        <img src="facebook.png" alt="Facebook" width="20" height="20">
-    </button>
-    <button class="share-button email" onclick="shareEmail()">
-        <img src="email.png" alt="Email" width="20" height="20">
-    </button>
-    <button class="share-button twitter" onclick="shareTwitter()">
-        <img src="twitter.png" alt="Twitter" width="20" height="20">
-    </button>
-</div>
-        <!-- Rodapé -->
-        <footer>
-            <div class="sobre">
-                <h2>Redes Sociais</h2>
-                <div class="social-icons">
-                    <a href="https://wa.me/qr/4KCWWIXJLLUVF1" target="_blank">
-                        <img src="whatsapp.png" alt="Whatsapp" width="20" height="20"> Whatsapp
-                    </a>
-                    <a href="https://www.instagram.com/academia2023estetica_e_saude/?igsh=MWtpMzNiNnAxeDRsbA%3D%3D#"
-                        target="_blank">
-                        <img src="instagram.png" alt="Instagram" width="20" height="20"> Instagram
-                    </a>
+                    <div>
+
+                    </div>
+                    <div style="display: none;">
+                        <label>O que ocupa seus pensamentos ultimamente?</label><br>
+                        <select id="question2">
+                            <option value="futuro">Futuro</option>
+                            <option value="familia">Família</option>
+                            <option value="trabalho">Trabalho</option>
+                            <option value="lembrancas">Lembranças do passado</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="linha">
-                </div>
-                <div class="report-error">
-                    <a href="mailto:antonyeltonrodrigues@gmail.com">
-                        <img src="error.png" alt="Instagram" width="14" height="14"> Reportar erro nesta página
-                    </a>
-                </div>
-        </footer>
+                <p id="result" style="font-size: 16px; font-style: italic;"></p>
+            </div>
+        </div>
+        <!-- FIM DO QUIZ-->
+        <!-- COMPARTILHAR-->
+        <div class="share-buttons">
+            <p>Compartilhe:</p>
+            <button class="share-button whatsapp" onclick="shareWhatsApp()">
+                <img src="whatsapp.png" alt="WhatsApp" width="20" height="20">
+            </button>
+            <button class="share-button facebook" onclick="shareFacebook()">
+                <img src="facebook.png" alt="Facebook" width="20" height="20">
+            </button>
+            <button class="share-button email" onclick="shareEmail()">
+                <img src="email.png" alt="Email" width="20" height="20">
+            </button>
+            <button class="share-button twitter" onclick="shareTwitter()">
+                <img src="twitter.png" alt="Twitter" width="20" height="20">
+            </button>
+        </div>
+    </div>
+
+    <!-- Rodapé -->
+    <footer>
+        <div class="sobre">
+            <h2>Redes Sociais</h2>
+            <div class="social-icons">
+                <a href="https://wa.me/qr/4KCWWIXJLLUVF1" target="_blank">
+                    <img src="whatsapp.png" alt="Whatsapp" width="20" height="20"> Whatsapp
+                </a>
+                <a href="https://www.instagram.com/academia2023estetica_e_saude/?igsh=MWtpMzNiNnAxeDRsbA%3D%3D#"
+                    target="_blank">
+                    <img src="instagram.png" alt="Instagram" width="20" height="20"> Instagram
+                </a>
+            </div>
+            <div class="linha">
+            </div>
+            <div class="report-error">
+                <a href="mailto:antonyeltonrodrigues@gmail.com">
+                    <img src="error.png" alt="Instagram" width="14" height="14"> Reportar erro nesta página
+                </a>
+            </div>
+    </footer>
     </div>
     <script src="script.js"></script>
+
 </body>
+
 </html>
