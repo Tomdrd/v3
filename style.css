@@ -540,4 +540,7 @@
         #atividade-calorias {
             width: 55%;
         }
+        .bold-number {
+            font-weight: bold; /* Deixa o texto em negrito */
+        }
         

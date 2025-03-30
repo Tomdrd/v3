@@ -306,7 +306,7 @@ function calcularGastoCalorico() {
     const gastoCaloricoTotal = taxaMetabolicaBasal * atividade;
 
     // Exibir o resultado
-    document.getElementById('resultado-calorias').innerText = `Seu gasto calórico diário é aproximadamente ${gastoCaloricoTotal.toFixed(2)} calorias.`;
+    document.getElementById('resultado-calorias').innerHTML = `Seu gasto calórico diário é aproximadamente <span class="bold-number">${gastoCaloricoTotal.toFixed(2)}</span> calorias.`;
 }
 
 
