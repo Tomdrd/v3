@@ -514,16 +514,30 @@
             cursor: pointer;
             margin: 10px;
         }
+        #calculoForm {
+            width: 100%;
+            gap: 5px;
+        }
         .selecionar {
-           margin: 20px 0 20px;
+            display: flex; /* Alinha os elementos em linha */
+    gap: 5px; /* Adiciona espaçamento de 5px entre os elementos */
+            width: 100%;
+           margin-top: 5px;
+           margin-bottom: 5px;
            display: inline-block;
         }
 .selecionar select {
-        margin-left: 10px; /* Espaçamento entre os elementos */
+        margin: 0 5px;
         padding: 10px;
         border: 1px solid #f8a025;
         border-radius: 5px;
         font-size: 16px;
         transition: all 0.3s ease-in-out;
+        }
+        .sexo-calorias {
+            width: 40%;
+        }
+        #atividade-calorias {
+            width: 55%;
         }
         
