@@ -1,16 +1,16 @@
 [
   {
     "id": 1,
-    "titulo": "Entendendo o IMC e sua Importância para a Saúde e Bem-Estar",
+    "titulo": "Entendendo o IMC e sua importância para a saúde e bem-estar",
     "data": "30 de março de 2025",
     "resumo": "O IMC é um indicador simples que relaciona peso e altura, ajudando a identificar riscos à saúde, como obesidade ou baixo peso. Apesar de suas limitações, ele é útil no monitoramento da saúde geral. Manter um IMC saudável requer alimentação equilibrada, exercícios regulares e acompanhamento médico.",
     "imagem": "img/post1.jpg",
-    "conteudo": "<p>O Índice de Massa Corporal (IMC) é uma das ferramentas mais utilizadas para avaliar se o peso corporal de uma pessoa está adequado à sua altura. Ele é amplamente reconhecido por profissionais de saúde como um indicador simples e eficaz para a triagem inicial de possíveis problemas relacionados ao peso, como obesidade ou baixo peso.</p><p><b>Como Calcular o IMC</b><br>O cálculo do IMC é bastante simples. Basta dividir o peso da pessoa (em quilogramas) pela altura ao quadrado (em metros). A fórmula é a seguinte: <p>COLOCAR IMAGEM DA FÓRMULA AQUI</p><p>Os resultados geralmente são classificados em categorias:<ul><li><strong>Abaixo do peso:</strong> IMC menor que 18,5</li><li><strong>Peso normal:</strong> IMC entre 18,5 e 24,9</li><li><strong>Sobrepeso:</strong> IMC entre 25 e 29,9</li><li><strong>Obesidade:</strong> IMC 30 ou maior</li></ul></p><p><b>Limitações do IMC</b><br>Embora o IMC seja um bom indicador geral, ele não leva em conta fatores como a quantidade de músculo ou gordura corporal. Atletas, por exemplo, podem ter um IMC elevado devido à massa muscular, sem estar com excesso de gordura.</p><p><b>Conclusão</b><br>O IMC é uma ferramenta útil para monitorar seu peso, mas deve ser usado em conjunto com outras avaliações, como exames clínicos e análises de composição corporal. Sempre consulte um profissional de saúde para um diagnóstico mais preciso e para orientação adequada.</p><p>Gostou do conteúdo? Compartilhe este artigo com seus amigos!</p>",
+    "conteudo": "<p>O Índice de Massa Corporal (IMC) é uma das ferramentas mais utilizadas para avaliar se o peso corporal de uma pessoa está adequado à sua altura. Ele é amplamente reconhecido por profissionais de saúde como um indicador simples e eficaz para a triagem inicial de possíveis problemas relacionados ao peso, como obesidade ou baixo peso.</p><p><b>Como Calcular o IMC</b><br>O cálculo do IMC é bastante simples. Basta dividir o peso da pessoa (em quilogramas) pela altura ao quadrado (em metros). A fórmula é a seguinte: <p><img src='img/formula-imc.png' alt='Fórmula do IMC'><br><small>Fonte: do autor</small></p><p>Os resultados geralmente são classificados em categorias:<ul><li><strong>Abaixo do peso:</strong> IMC menor que 18,5</li><li><strong>Peso normal:</strong> IMC entre 18,5 e 24,9</li><li><strong>Sobrepeso:</strong> IMC entre 25 e 29,9</li><li><strong>Obesidade:</strong> IMC 30 ou maior</li></ul></p><p><b>Limitações do IMC</b><br>Embora o IMC seja um bom indicador geral, ele não leva em conta fatores como a quantidade de músculo ou gordura corporal. Atletas, por exemplo, podem ter um IMC elevado devido à massa muscular, sem estar com excesso de gordura.</p><p><b>Conclusão</b><br>O IMC é uma ferramenta útil para monitorar seu peso, mas deve ser usado em conjunto com outras avaliações, como exames clínicos e análises de composição corporal. Sempre consulte um profissional de saúde para um diagnóstico mais preciso e para orientação adequada.</p><p>Gostou do conteúdo? Compartilhe este artigo com seus amigos!</p>",
     "slug": "entendendo-o-imc"
   },
   {
     "id": 2,
-    "titulo": "A Importância da Hidratação para a Saúde e o Bem-Estar",
+    "titulo": "A importância da hidratação para a saúde e o bem-estar",
     "data": "30 de março de 2025",
     "resumo": "A hidratação é essencial para o funcionamento do organismo, ajudando na regulação da temperatura corporal, transporte de nutrientes e eliminação de toxinas. Beber água regularmente melhora a disposição, a pele e a saúde geral. Manter-se hidratado é um hábito simples que traz inúmeros benefícios.",
     "imagem": "img/post2.jpg",
@@ -19,7 +19,7 @@
   },
   {
     "id": 3,
-    "titulo": "Entenda o Gasto Calórico Diário e Como Ele Afeta Seu Corpo",
+    "titulo": "Entenda o gasto calórico diário e como ele afeta seu corpo",
     "data": "30 de março de 2025",
     "resumo": "O gasto calórico diário é a quantidade de calorias que seu corpo utiliza para manter suas funções vitais e realizar atividades diárias. Compreender esse conceito é essencial para equilibrar o consumo alimentar e os objetivos de saúde, seja para emagrecimento, ganho de massa muscular ou manutenção do peso.",
     "imagem": "img/post3.jpg",
