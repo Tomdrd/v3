@@ -1,0 +1,560 @@
+        :root {
+            color-scheme: light dark;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+            width: 100vw;
+        }
+
+        header {
+            width: 100%;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-header, #f8a025);
+            color: white;
+            position: relative;
+        }
+
+        p {
+            font-size: 14px;
+            /* Tamanho da fonte */
+            color: #868686;
+            /* Cor do texto */
+            line-height: 1.6;
+            /* Altura da linha para melhor legibilidade */
+            margin: 10px 0;
+            /* Margem superior e inferior */
+            font-family: Arial, sans-serif;
+            /* Fonte */
+            text-align: justify;
+            /* Justificar o texto */
+            text-align: center;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap');
+
+        h2 {
+            font-size: 16px;
+            /* Menor que antes para um visual mais equilibrado */
+            font-weight: 600;
+            /* Peso médio para melhor contraste */
+            color: #868686;
+            /* Cinza escuro, legível em qualquer fundo */
+            margin-bottom: 10px;
+            text-align: center;
+            position: relative;
+            padding-bottom: 6px;
+            font-family: 'Big Shoulders', sans-serif;
+            letter-spacing: 2px;
+            /* Aumenta o espaçamento entre as letras */
+            text-transform: uppercase;
+        }
+
+        h2::after {
+            content: "";
+            width: 50px;
+            height: 3px;
+            background-color: #f8a025;
+            /* Mantendo a harmonia com o menu */
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+            opacity: 0.9;
+        }
+
+        header img {
+            height: 40px;
+            margin-left: 10px;
+        }
+
+        nav {
+            display: none;
+            position: absolute;
+            top: 60px;
+            right: 10px;
+            background: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+        }
+
+        nav a {
+            display: block;
+            padding: 10px;
+            color: black;
+            text-decoration: none;
+        }
+
+        nav a:hover {
+            background: #ddd;
+        }
+
+        .menu-icon {
+            margin-right: 30px;
+            font-size: 30px;
+            cursor: pointer;
+            color: black;
+        }
+
+        #menu {
+            margin-right: 20px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .box, .box2 {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #e6e3e333;
+            border-radius: 10px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .input-imc {
+            width: 100%;
+            display: inline-block;
+            gap: 10px;
+            color: #dc3545;
+        }
+
+        .input-lembre {
+            display: inline-block;
+            gap: 10px;
+        }
+
+        input,
+        button {
+            width: 90%;
+            padding: 10px;
+            margin: 5px 0;
+        }
+
+        .button-container {
+            display: flex;
+            gap: 10px;
+            /* Espaçamento entre os botões */
+        }
+
+        button {
+            background-color: #f8a025;
+            color: rgb(0, 0, 0);
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 10px;
+            /* Bordas arredondadas */
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+            /* Sombra */
+            transition: background-color 0.3s, color 0.3s;
+            /* Transição suave */
+        }
+
+        button:hover {
+            background-color: #e6951f;
+            color: white;
+            /* Cor do texto ao passar o mouse */
+        }
+
+        .progress-container {
+            width: 100%;
+            background-color: #ddd;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            position: relative;
+            /* Adicionado para posicionamento absoluto do texto */
+            text-align: center;
+            /* Centraliza o texto horizontalmente */
+        }
+
+        .progress-bar {
+            height: 40px;
+            background: linear-gradient(to right, #ffffff, #527ef7);
+            /* Gradiente de cor */
+            width: 0%;
+            position: absolute;
+            /* Adicionado para posicionamento do texto */
+            top: 0;
+            left: 0;
+        }
+
+        #progress-text {
+            position: relative;
+            z-index: 1;
+            color: #000000;
+            font-weight: bold;
+            line-height: 40px;
+            /* Alinha verticalmente o texto */
+        }
+
+        .progress-bar span {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-weight: bold;
+        }
+
+        footer {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.158);
+            color: white;
+            text-align: center;
+        }
+
+        .sobre {
+            padding: 15px;
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .social-icons a {
+            text-decoration: none;
+            font-size: 14px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .social-icons a:hover {
+            color: #8a8a8a;
+        }
+
+        #resultadoIMC {
+            font-size: 16px;
+            font-weight: normal;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 0;
+            /* Bordas arredondadas */
+            text-align: center;
+            width: 180px;
+            margin: 10px auto;
+            /* Centraliza horizontalmente */
+        }
+
+        .abaixo-do-peso {
+            border-bottom: 3px solid #dc3545;
+            width: 180px;
+        }
+
+        .peso-normal {
+            border-bottom: 3px solid #28a745;
+            width: 180px;
+        }
+
+        .sobrepeso {
+            border-bottom: 3px solid #ffc107;
+            width: 180px;
+        }
+
+        .obesidade {
+            border-bottom: 3px solid #dc3545;
+            width: 180px;
+        }
+
+        .info-icon.abaixo-do-peso {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .info-icon.peso-normal {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .info-icon.sobrepeso {
+            background-color: #ffc107;
+            color: black;
+        }
+
+        .info-icon.obesidade {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .info-icon {
+            /* botao botão */
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #6E6E6E;
+            color: rgb(0, 0, 0);
+            text-align: center;
+            line-height: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            margin-left: 5px;
+            margin-top: 3px;
+            margin-right: 3px;
+        }
+
+        .info-text {
+            display: none;
+            background-color: #000000;
+            color: #6d6d6d;
+            padding: 20px;
+            border-radius: 10px;
+            position: absolute;
+            right: 130px;
+            z-index: 3;
+            width: 200px;
+            font-size: 16px;
+            text-align: left;
+            font-style: italic;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-container {
+            position: absolute;
+            display: inline-block;
+            width: 200px;
+        }
+
+        .meta-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            /* Espaçamento entre o rótulo e o campo de entrada */
+        }
+
+        .botao-resultado, .botao-calcular, .botao-quiz {
+            width: 60%;
+        }
+
+        label { 
+            color: #868686;
+        }
+
+        .meta-container label {
+            margin: 0;
+            color: #999;
+        }
+
+        .meta-container input {
+            flex: 1;
+        }
+        .result {
+            font-size: 18px;
+        }
+        .quiz-p {
+            margin-bottom: 30px;
+        }
+        #question1, #question2 {
+            width: 95%;
+            padding: 10px;
+            border: 1px solid #f8a025;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: all 0.3s ease-in-out;
+            margin: 10px 0 20px;
+        }
+
+        input {
+            width: 90%;
+            padding: 10px;
+            border: 1px solid #f8a025;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        input:focus {
+            border-color: #ff7b00;
+            outline: none;
+        }
+
+        input::placeholder {
+            color: #999;
+            font-style: italic;
+        }
+
+        .report-error {
+            font-size: 12px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .report-error a {
+            display: inline-block;
+            color: #c5c5c5;
+            text-decoration: none;
+            gap: 5px;
+            /* Espaçamento entre o ícone e o texto */
+        }
+
+        .report-error a:hover {
+            color: #8a8a8a;
+        }
+
+        .report-error img {
+            vertical-align: middle;
+        }
+
+        /* compartilhar */
+        .share-buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .share-button {
+            align-items: center;
+            width: auto;
+            gap: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: white;
+            font-size: 14px;
+            text-decoration: none;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .share-button img {
+            vertical-align: middle;
+        }
+
+        .share-button.whatsapp {
+            border: 1px solid #29a71a;
+            /* Cor da logo do WhatsApp */
+            border-radius: 20px;
+            background: none;
+            color: #29a71a;
+        }
+
+        .share-button.whatsapp:hover {
+            background-color: #29a71a;
+            color: white;
+        }
+
+        .share-button.facebook {
+            border: 1px solid #1877F2;
+            /* Cor da logo do Facebook */
+            color: #1877F2;
+            border-radius: 20px;
+            background: none;
+        }
+
+        .share-button.facebook:hover {
+            background-color: #1877F2;
+            color: white;
+        }
+
+        .share-button.email {
+            border: 1px solid #ff2147;
+            /* Cor cinza */
+            color: #ff2147;
+            border-radius: 20px;
+            background: none;
+        }
+
+        .share-button.email:hover {
+            background-color: #ff2147;
+            color: white;
+        }
+
+        .share-button.twitter {
+            border: 1px solid #636363;
+            /* Cor da logo do Twitter */
+            color: #ffffff;
+            border-radius: 20px;
+            background: none;
+        }
+
+        .share-button.twitter:hover {
+            background-color: #000000;
+            border: 1px solid #000000;
+            /* Cor da logo do Twitter */
+            color: white;
+        }
+
+        .linha {
+            height: 2px;
+            background-color: #141414;
+            margin-top: 20px;
+        }
+
+        .imc {
+            width: 180px;
+            border: 1px solid #e6e3e333;
+            margin-bottom: 10px;
+        }
+
+        .classificacao {
+            border: 1px solid #e6e3e333;
+            width: 180px;
+        }
+        .emoji {
+            width: 32px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        #calculoForm {
+            width: 100%;
+            gap: 5px;
+        }
+        .selecionar {
+            display: flex; /* Alinha os elementos em linha */
+    gap: 5px; /* Adiciona espaçamento de 5px entre os elementos */
+            width: 100%;
+           margin-top: 5px;
+           margin-bottom: 5px;
+           display: inline-block;
+        }
+.selecionar select {
+        margin: 0 5px;
+        padding: 10px;
+        border: 1px solid #f8a025;
+        border-radius: 5px;
+        font-size: 16px;
+        transition: all 0.3s ease-in-out;
+        }
+        .sexo-calorias {
+            width: 40%;
+        }
+        #atividade-calorias {
+            width: 55%;
+        }
+        .bold-number {
+            font-weight: bold; /* Deixa o texto em negrito */
+        }
+        .link-post {
+            margin: 10px;
+        }
+        .link-post a {
+            color: #f8a025; /* Cor do link */
+            text-decoration: none; /* Remove o sublinhado */
+            font-weight: bold; /* Deixa o texto em negrito */
+            transition: color 0.3s ease; /* Transição suave para hover */
+        }
+        
+        .link-post a:hover {
+            color: #e6951f; /* Cor de destaque ao passar o mouse */
+            text-decoration: underline; /* Adiciona sublinhado ao passar o mouse */
+        }
+        
