@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     <div class="post">
                         <img src="${post.imagem}" alt="${post.titulo}">
                         <h2><a href="post.html?slug=${post.slug}">${post.titulo}</a></h2>
-                        <p>${post.data}</p>
+                        
                         <p>${post.resumo}</p>
                     </div>
                 `;
