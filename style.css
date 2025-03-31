@@ -543,4 +543,18 @@
         .bold-number {
             font-weight: bold; /* Deixa o texto em negrito */
         }
+        .link-post {
+            margin: 10px;
+        }
+        .link-post a {
+            color: #f8a025; /* Cor do link */
+            text-decoration: none; /* Remove o sublinhado */
+            font-weight: bold; /* Deixa o texto em negrito */
+            transition: color 0.3s ease; /* Transição suave para hover */
+        }
+        
+        .link-post a:hover {
+            color: #e6951f; /* Cor de destaque ao passar o mouse */
+            text-decoration: underline; /* Adiciona sublinhado ao passar o mouse */
+        }
         
