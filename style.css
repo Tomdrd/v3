@@ -4,7 +4,7 @@
 
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
+            margin: 0 auto;
             padding: 0;
             display: flex;
             flex-direction: column;
@@ -15,7 +15,7 @@
 
         header {
             width: 100%;
-            padding: 10px;
+            height: 50px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -23,7 +23,22 @@
             color: white;
             position: relative;
         }
-
+                header img {
+                    height: 50px; /* Tamanho padrão da logo para dispositivos menores */
+                    margin-left: 10px;
+                    min-width: 100%; /* Garante que a imagem não ultrapasse o tamanho do contêiner */
+                    object-fit: contain; /* Ajusta a imagem para caber no espaço disponível */
+                }
+         /* Para telas maiores (exemplo: desktops) */
+         @media (min-width: 768px) {
+            header {
+                height: 80px; /* Altura maior para desktops */
+            }
+        
+            header img {
+                height: 80px; /* Aumenta o tamanho da logo para desktops */
+            }
+        }
         p {
             font-size: 14px;
             /* Tamanho da fonte */

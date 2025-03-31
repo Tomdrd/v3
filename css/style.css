@@ -1,6 +1,7 @@
         :root {
             color-scheme: light dark;
         }
+        
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -10,6 +11,8 @@ body {
     align-items: center;
     overflow-x: hidden;
     width: 100vw;
+    box-sizing: border-box;
+    
 }
 
 h1 {
@@ -44,7 +47,7 @@ li {
 }
 header {
     width: 100%;
-    padding: 10px;
+    height: 50px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -52,21 +55,31 @@ header {
     color: white;
     position: relative;
 }
-header img {
-    height: 40px;
-    margin-left: 10px;
+        header img {
+            height: 50px; /* Tamanho padrão da logo para dispositivos menores */
+            margin-left: 10px;
+            min-width: 100%; /* Garante que a imagem não ultrapasse o tamanho do contêiner */
+            object-fit: contain; /* Ajusta a imagem para caber no espaço disponível */
+        }
+ /* Para telas maiores (exemplo: desktops) */
+ @media (min-width: 768px) {
+    header {
+        height: 80px; /* Altura maior para desktops */
+    }
+
+    header img {
+        height: 80px; /* Aumenta o tamanho da logo para desktops */
+    }
 }
 
 .container {
-    margin: 20px;
+    margin-top: 0 auto;
     width: 90%;
     max-width: 600px;
-    padding: 10px 20px;
-    border: 1px solid #e6e3e333;
-    border-radius: 10px;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
 }
 #posts-container {
+    margin-top: 20px;
+    padding: 0;
 }
 .post-date {
     font-size: 0.9rem; /* Tamanho menor para diferenciar da fonte principal */
