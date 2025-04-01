@@ -71,7 +71,37 @@ header {
         height: 80px; /* Aumenta o tamanho da logo para desktops */
     }
 }
+nav {
+    display: none;
+    position: absolute;
+    top: 60px;
+    right: 10px;
+    background: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+}
 
+nav a {
+    display: block;
+    padding: 10px;
+    color: black;
+    text-decoration: none;
+}
+
+nav a:hover {
+    background: #ddd;
+}
+
+.menu-icon {
+    margin-right: 30px;
+    font-size: 30px;
+    cursor: pointer;
+    color: black;
+}
+
+#menu {
+    margin-right: 20px;
+}
 .container {
     margin-top: 0 auto;
     width: 90%;
@@ -112,3 +142,103 @@ li li {
     margin-bottom: 5px; /* Reduz o espaçamento entre itens aninhados */
     color: #555; /* Cor mais clara para itens aninhados */
 }
+
+#menu {
+    display: none; /* Menu oculto por padrão */
+    flex-direction: column;
+    background-color: #ffffff;
+    position: absolute;
+    top: 50px;
+    right: 0;
+    width: 100px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+#menu.active {
+    display: flex; /* Exibe o menu quando a classe 'active' é adicionada */
+}
+
+.menu-icon {
+    cursor: pointer;
+    font-size: 24px;
+    color: #000000;
+}
+        /* compartilhar */
+        .share-buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .share-button {
+            align-items: center;
+            width: auto;
+            gap: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: white;
+            font-size: 14px;
+            text-decoration: none;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .share-button img {
+            vertical-align: middle;
+        }
+
+        .share-button.whatsapp {
+            border: 1px solid #29a71a;
+            /* Cor da logo do WhatsApp */
+            border-radius: 20px;
+            background: none;
+            color: #29a71a;
+        }
+
+        .share-button.whatsapp:hover {
+            background-color: #29a71a;
+            color: white;
+        }
+
+        .share-button.facebook {
+            border: 1px solid #1877F2;
+            /* Cor da logo do Facebook */
+            color: #1877F2;
+            border-radius: 20px;
+            background: none;
+        }
+
+        .share-button.facebook:hover {
+            background-color: #1877F2;
+            color: white;
+        }
+
+        .share-button.email {
+            border: 1px solid #ff2147;
+            /* Cor cinza */
+            color: #ff2147;
+            border-radius: 20px;
+            background: none;
+        }
+
+        .share-button.email:hover {
+            background-color: #ff2147;
+            color: white;
+        }
+
+        .share-button.twitter {
+            border: 1px solid #636363;
+            /* Cor da logo do Twitter */
+            color: #ffffff;
+            border-radius: 20px;
+            background: none;
+        }
+
+        .share-button.twitter:hover {
+            background-color: #000000;
+            border: 1px solid #000000;
+            /* Cor da logo do Twitter */
+            color: white;
+        }
