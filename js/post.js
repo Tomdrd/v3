@@ -2,29 +2,6 @@ function toggleMenu() {
     const menu = document.getElementById('menu');
     menu.classList.toggle('active');
 }
-   //COMPARTILHE
-   function shareWhatsApp() {
-    const url = encodeURIComponent(window.location.href);
-    const text = encodeURIComponent("Confira este site incrível!");
-    window.open(`https://api.whatsapp.com/send?text=${text} ${url}`, '_blank');
-}
-
-function shareFacebook() {
-    const url = encodeURIComponent(window.location.href);
-    window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
-}
-
-function shareEmail() {
-    const subject = encodeURIComponent("Confira este site incrível!");
-    const body = encodeURIComponent(`Dê uma olhada neste site: ${window.location.href}`);
-    window.open(`mailto:?subject=${subject}&body=${body}`, '_blank');
-}
-
-function shareTwitter() {
-    const url = encodeURIComponent(window.location.href);
-    const text = encodeURIComponent("Confira este site incrível!");
-    window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, '_blank');
-}
 document.addEventListener("DOMContentLoaded", () => {
     const params = new URLSearchParams(window.location.search);
     const slug = params.get("slug");
