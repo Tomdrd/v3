@@ -35,9 +35,6 @@ h2 {
 .post {
     padding: 10px;
 }
-li {
-    
-}
 .post img {
     width: 100%;
     max-height: 200px;
@@ -118,20 +115,14 @@ nav a:hover {
 li {
     font-size: 1rem; /* Tamanho da fonte */
     color: #868686; /* Cor do texto */
-    line-height: 1.0; /* Espaçamento entre linhas */
-    margin-bottom: 10px; /* Espaçamento entre os itens */
-    list-style-type: disc; /* Define o estilo do marcador como um círculo preenchido */
-    padding-left: 20px; /* Adiciona espaçamento à esquerda para alinhar os itens */
+    line-height: 1.5;
+    margin-bottom: 20px; /* Espaçamento entre os itens */
     list-style-type: none; /* Remove os pontinhos (marcadores) */
 }
-
-/* Estilo para listas dentro de listas (listas aninhadas) */
-li li {
-    list-style-type: circle; /* Define o marcador como um círculo vazio */
-    margin-bottom: 5px; /* Reduz o espaçamento entre itens aninhados */
-    color: #555; /* Cor mais clara para itens aninhados */
+ul, ol {
+    padding-left: 20px; /* Ajusta o recuo interno da lista */
+    margin-left: 0; /* Remove o recuo externo */
 }
-
 #menu {
     display: none; /* Menu oculto por padrão */
     flex-direction: column;
