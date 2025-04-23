@@ -309,4 +309,19 @@ function calcularGastoCalorico() {
     document.getElementById('resultado-calorias').innerHTML = `Seu gasto calórico diário é aproximadamente <strong>${gastoCaloricoTotal.toFixed(2)}</strong> calorias.`;
 }
 
+// Configuração do Firebase
+const firebaseConfig = {
+    apiKey: "AIzaSyDoDuXxhXa58BSfBtJUUItbk7s9YmlBOGo",
+    authDomain: "meuprojetosaude-54d64.firebaseapp.com",
+    projectId: "meuprojetosaude-54d64",
+    storageBucket: "meuprojetosaude-54d64.firebasestorage.app",
+    messagingSenderId: "105539186714",
+    appId: "1:105539186714:web:c5286a9a3f5b4bc8c161a3",
+    measurementId: "G-HF1H65STC1"
+};
 
+// Inicializando o Firebase
+const app = firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+  
