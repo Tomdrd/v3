@@ -15,22 +15,21 @@
     <link rel="manifest" href="manifest.json">
     <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <!-- Adicione isso no seu arquivo HTML dentro da tag <head> -->
-<script src="https://www.gstatic.com/firebasejs/9.10.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.10.0/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.10.0/firebase-firestore.js"></script>
 
     <title>Estética e Saúde Academia</title>
 </head>
 
 <body>
     <header>
+        <div id="usuarioLogado" class="usuario-menu" style="display: none;">
+            <img id="fotoUsuario" src="" alt="Foto de perfil">
+            <span id="nomeUsuario"></span>
+          </div>
+          
         <a href="index.html"><img src="logo.png" alt="Logo"></a>  
         <div class="menu-icon" onclick="toggleMenu()">☰</div>
         <nav id="menu">
-            <button onclick="loginComGoogle()">Entrar</button>
             <a href="">Login</a>
-            <a href="#" onclick="loginComGoogle()" class="link-google">Entrar com Google</a>
             <a href="blog.html">Blog</a>
         </nav>
     </header>
