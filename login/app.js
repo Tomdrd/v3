@@ -28,3 +28,16 @@ const firebaseConfig = {
       });
   }
   
+  import { getAuth, setPersistence, browserLocalPersistence } from "firebase/auth";
+
+const auth = getAuth();
+setPersistence(auth, browserLocalPersistence)
+  .then(() => {
+    // A persistência foi definida com sucesso.
+    // Agora você pode tentar fazer login.
+    return signInWithEmailAndPassword(auth, email, password);
+  })
+  .catch((error) => {
+    // Ocorreu um erro ao definir a persistência.
+    console.error("Erro ao definir a persistência:", error);
+  });
