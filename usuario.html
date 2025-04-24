@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Página de Treinos</title>
-  <link rel="stylesheet" href="styles.css"> <!-- Caso tenha um arquivo CSS externo -->
+  <link rel="stylesheet" href="styles.css">
   <style>
     /* Estilos internos para o formulário e fichas */
     #fichaForm {
@@ -127,6 +127,8 @@
       if (user) {
         const uid = user.uid;
 
+        console.log("Usuário autenticado:", uid); // Log do ID do usuário autenticado
+
         // Adiciona nova ficha de treino
         fichaForm.addEventListener("submit", function (e) {
           e.preventDefault();
@@ -161,6 +163,8 @@
 
         fichaRef.on("value", (snapshot) => {
           const dados = snapshot.val();
+          console.log("Dados recebidos do Firebase:", dados); // Log dos dados recebidos
+
           listaFichas.innerHTML = "";
 
           if (dados) {
