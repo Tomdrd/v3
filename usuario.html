@@ -1,14 +1,242 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Página de Treinos</title>
+  <link rel="stylesheet" href="styles.css"> <!-- Caso tenha um arquivo CSS externo -->
+  <style>
+    /* Estilos internos para o formulário e fichas */
+    #fichaForm {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-width: 400px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: #fff7ec;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    #fichaForm input {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-family: inherit;
+    }
+
+    #fichaForm button {
+      padding: 10px;
+      background-color: #f8a025;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    #fichaForm button:hover {
+      background-color: #e89100;
+    }
+
+    #mensagem {
+      text-align: center;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    #listaFichas {
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 15px;
+      background-color: #fff7ec;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+
+    #listaFichas div {
+      margin-bottom: 15px;
+      padding: 10px;
+      background-color: #ffffff;
+      border-radius: 8px;
+      border-left: 5px solid #f8a025;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    #listaFichas button {
+      margin-top: 5px;
+      margin-right: 10px;
+      padding: 6px 10px;
+      font-size: 0.9rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      background-color: #f8a025;
+      color: white;
+    }
+
+    #listaFichas button:hover {
+      background-color: #e89100;
+    }
+  </style>
+</head>
 <body>
-    <h2>Meu Perfil</h2>
-    <div id="infoUsuario"></div>
-  
-    <h3>Histórico de IMC</h3>
-    <ul id="historicoIMC"></ul>
-  
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js"></script>
-    <script src="firebase-config.js"></script>
-    <script src="perfil.js"></script>
-  </body>
-  
+
+  <h2>Nova Ficha de Treino</h2>
+  <form id="fichaForm">
+    <input type="text" id="exercicio" placeholder="Exercício" required />
+    <input type="number" id="series" placeholder="Séries" required />
+    <input type="number" id="repeticoes" placeholder="Repetições" required />
+    <input type="text" id="carga" placeholder="Carga (kg)" required />
+    <button type="submit">Salvar Ficha</button>
+  </form>
+
+  <div id="mensagem" style="margin-top: 10px; color: green;"></div>
+
+  <h2>Minhas Fichas Salvas</h2>
+  <div id="listaFichas"></div>
+
+  <!-- Firebase Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js"></script>
+
+  <script>
+    // Configuração do Firebase
+    const firebaseConfig = {
+      apiKey: "SUA_API_KEY",
+      authDomain: "SEU_DOMINIO.firebaseapp.com",
+      databaseURL: "https://SEU_PROJETO.firebaseio.com",
+      projectId: "SEU_PROJETO_ID",
+      storageBucket: "SEU_BUCKET.appspot.com",
+      messagingSenderId: "SEU_ID",
+      appId: "SEU_APP_ID"
+    };
+
+    const app = firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+
+    const fichaForm = document.getElementById("fichaForm");
+    const mensagem = document.getElementById("mensagem");
+    const listaFichas = document.getElementById("listaFichas");
+
+    // Verifica o estado de autenticação do usuário
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        const uid = user.uid;
+
+        // Adiciona nova ficha de treino
+        fichaForm.addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const exercicio = document.getElementById("exercicio").value;
+          const series = document.getElementById("series").value;
+          const repeticoes = document.getElementById("repeticoes").value;
+          const carga = document.getElementById("carga").value;
+
+          const fichaRef = firebase.database().ref("fichas_treino/" + uid);
+
+          const novaFicha = {
+            exercicio,
+            series,
+            repeticoes,
+            carga,
+            data: new Date().toLocaleString()
+          };
+
+          fichaRef.push(novaFicha)
+            .then(() => {
+              mensagem.textContent = "Ficha salva com sucesso!";
+              fichaForm.reset();
+            })
+            .catch((error) => {
+              mensagem.textContent = "Erro ao salvar: " + error.message;
+            });
+        });
+
+        // Exibe as fichas salvas do usuário
+        const fichaRef = firebase.database().ref("fichas_treino/" + uid);
+
+        fichaRef.on("value", (snapshot) => {
+          const dados = snapshot.val();
+          listaFichas.innerHTML = "";
+
+          if (dados) {
+            Object.entries(dados).forEach(([key, ficha]) => {
+              const div = document.createElement("div");
+              div.innerHTML = `
+                <strong>${ficha.exercicio}</strong><br>
+                Séries: ${ficha.series} | Repetições: ${ficha.repeticoes} | Carga: ${ficha.carga}<br>
+                <small>Registrado em: ${ficha.data}</small><br>
+                <button onclick="editarFicha('${key}', '${ficha.exercicio}', '${ficha.series}', '${ficha.repeticoes}', '${ficha.carga}')">Editar</button>
+                <button onclick="excluirFicha('${key}')">Excluir</button>
+                <hr>
+              `;
+              listaFichas.appendChild(div);
+            });
+          } else {
+            listaFichas.innerHTML = "<p>Nenhuma ficha cadastrada ainda.</p>";
+          }
+        });
+      } else {
+        mensagem.textContent = "Você precisa estar logado.";
+      }
+    });
+
+    // Função para excluir ficha
+    function excluirFicha(id) {
+      const uid = firebase.auth().currentUser.uid;
+      const fichaRef = firebase.database().ref("fichas_treino/" + uid + "/" + id);
+      fichaRef.remove()
+        .then(() => {
+          alert("Ficha excluída com sucesso!");
+        })
+        .catch((error) => {
+          alert("Erro ao excluir: " + error.message);
+        });
+    }
+
+    // Função para editar ficha
+    function editarFicha(id, exercicio, series, repeticoes, carga) {
+      document.getElementById("exercicio").value = exercicio;
+      document.getElementById("series").value = series;
+      document.getElementById("repeticoes").value = repeticoes;
+      document.getElementById("carga").value = carga;
+
+      const form = document.getElementById("fichaForm");
+      const botao = form.querySelector("button");
+      botao.textContent = "Atualizar Ficha";
+
+      form.onsubmit = function (e) {
+        e.preventDefault();
+        const uid = firebase.auth().currentUser.uid;
+
+        const fichaAtualizada = {
+          exercicio: document.getElementById("exercicio").value,
+          series: document.getElementById("series").value,
+          repeticoes: document.getElementById("repeticoes").value,
+          carga: document.getElementById("carga").value,
+          data: new Date().toLocaleString()
+        };
+
+        firebase.database().ref("fichas_treino/" + uid + "/" + id).set(fichaAtualizada)
+          .then(() => {
+            alert("Ficha atualizada com sucesso!");
+            form.reset();
+            botao.textContent = "Salvar Ficha";
+            form.onsubmit = originalSubmitHandler;
+          })
+          .catch((error) => {
+            alert("Erro ao atualizar: " + error.message);
+          });
+      };
+    }
+
+    // Guardar o comportamento original do submit
+    const originalSubmitHandler = document.getElementById("fichaForm").onsubmit;
+  </script>
+
+</body>
+</html>
