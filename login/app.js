@@ -38,7 +38,6 @@ auth.onAuthStateChanged((user) => {
 function mostrarInfoUsuario(user) {
   document.getElementById('infoUsuario').innerHTML = `
     <p><strong>Bem-vindo:</strong> ${user.displayName}</p>
-    <p><strong>Email:</strong> ${user.email}</p>
     <img src="${user.photoURL}" alt="Foto de perfil">
   `;
 }
@@ -128,17 +127,3 @@ window.redefinirSenha = function () {
       alert("Erro ao enviar e-mail: " + error.message);
     });
 }
-function mostrarInfoNoMenu(user) {
-  const nome = user.displayName;
-  const foto = user.photoURL;
-
-  document.getElementById("nomeUsuario").textContent = nome;
-  document.getElementById("fotoUsuario").src = foto;
-  document.getElementById("usuarioLogado").style.display = "flex";
-}
-auth.onAuthStateChanged((user) => {
-  if (user) {
-    mostrarInfoNoMenu(user); // Mostra no menu
-    mostrarInfoUsuario(user); // Mostra no login (se tiver)
-  }
-});
