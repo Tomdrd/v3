@@ -52,3 +52,62 @@ window.logout = function () {
       alert("Erro ao sair: " + error.message);
     });
 }
+
+function validarEmail(email) {
+  // Expressão regular básica para validar e-mail
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return regex.test(email);
+}
+
+window.loginComEmailESenha = function () {
+  const email = document.getElementById('email').value.trim();
+  const senha = document.getElementById('senha').value.trim();
+
+  if (!email || !senha) {
+    alert("Por favor, preencha todos os campos.");
+    return;
+  }
+
+  if (!validarEmail(email)) {
+    alert("E-mail inválido.");
+    return;
+  }
+
+  auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+    .then(() => auth.signInWithEmailAndPassword(email, senha))
+    .then((result) => {
+      mostrarInfoUsuario(result.user);
+    })
+    .catch((error) => {
+      alert("Erro no login: " + error.message);
+    });
+}
+
+window.criarConta = function () {
+  const email = document.getElementById('email').value.trim();
+  const senha = document.getElementById('senha').value.trim();
+
+  if (!email || !senha) {
+    alert("Por favor, preencha todos os campos.");
+    return;
+  }
+
+  if (!validarEmail(email)) {
+    alert("E-mail inválido.");
+    return;
+  }
+
+  if (senha.length < 6) {
+    alert("A senha deve ter pelo menos 6 caracteres.");
+    return;
+  }
+
+  auth.createUserWithEmailAndPassword(email, senha)
+    .then((result) => {
+      alert("Conta criada com sucesso!");
+      mostrarInfoUsuario(result.user);
+    })
+    .catch((error) => {
+      alert("Erro ao criar conta: " + error.message);
+    });
+}
