@@ -175,6 +175,24 @@
             </div>
         </div>
         <!-- FIM DO QUIZ-->
+         <div class="box"><div id="login-form">
+            <input type="email" id="email" placeholder="E-mail">
+            <input type="password" id="senha" placeholder="Senha">
+            <button onclick="login()">Login</button>
+            <button onclick="cadastrar()">Cadastrar</button>
+          </div>
+          
+          <div id="area-logada" style="display: none;">
+            <h2>Ficha de Treino</h2>
+            <input type="text" id="exercicio" placeholder="Exercício">
+            <input type="number" id="series" placeholder="Séries">
+            <input type="number" id="repeticoes" placeholder="Repetições">
+            <input type="number" id="carga" placeholder="Carga (kg)">
+            <button onclick="salvarFicha()">Salvar Ficha</button>
+            <button onclick="logout()">Sair</button>
+            <ul id="lista-fichas"></ul>
+          </div>
+          </div>
         <!-- COMPARTILHAR-->
         <div class="share-buttons">
             <p>Compartilhe:</p>
@@ -245,7 +263,11 @@
 <!-- Seu script JS -->
 <script src="main.js"></script> <!-- ou outro arquivo com a lógica do IMC -->
 
-
+<script type="module">
+    import { auth, db } from './firebase-config.js';
+    // e continua o restante do seu código aqui (login, salvarFicha etc.)
+  </script>
+  
 
 </body>
 
