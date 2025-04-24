@@ -102,7 +102,7 @@ body {
     color: #f8a025;
     border: none;
     margin-top: 5px;
-    text-decoration: underline;
+    text-decoration: none;
     font-size: 14px;
   }
   
@@ -110,8 +110,7 @@ body {
     color: #e58900;
   }
   #infoUsuario {
-    margin-top: 20px;
-    padding: 15px;
+
     border-radius: 10px;
     text-align: center;
     transition: background-color 0.3s;
