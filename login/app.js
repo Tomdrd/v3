@@ -1,7 +1,4 @@
-import { getAuth, setPersistence, browserLocalPersistence, onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signOut } from "firebase/auth";
-
-// Configuração do Firebase
-const firebaseConfig = {
+const firebaseConfig = { 
   apiKey: "AIzaSyDoDuXxhXa58BSfBtJUUItbk7s9YmlBOGo",
   authDomain: "meuprojetosaude-54d64.firebaseapp.com",
   projectId: "meuprojetosaude-54d64",
@@ -11,66 +8,47 @@ const firebaseConfig = {
   measurementId: "G-HF1H65STC1"
 };
 
-// Inicializar o Firebase
 firebase.initializeApp(firebaseConfig);
 
-const auth = getAuth();
-const provider = new GoogleAuthProvider();
+const auth = firebase.auth();
+const provider = new firebase.auth.GoogleAuthProvider();
 
-// Configurar a persistência
-setPersistence(auth, browserLocalPersistence)
-  .then(() => {
-    console.log("Persistência configurada para armazenamento local.");
-  })
-  .catch((error) => {
-    console.error("Erro ao configurar a persistência:", error);
-  });
-
-// Detectar o estado de autenticação
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    // Usuário está logado
-    console.log("Usuário está logado:", user.displayName, user.email);
-    exibirInformacoesDoUsuario(user);
-  } else {
-    // Usuário não está logado
-    console.log("Usuário não está logado.");
-    // Redirecione para a página de login ou exiba a interface de login
-  }
-});
-
-// Função de login com Google
 window.loginComGoogle = function () {
-  signInWithPopup(auth, provider)
+  auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+    .then(() => {
+      return auth.signInWithPopup(provider);
+    })
     .then((result) => {
       const user = result.user;
-      console.log("Login com Google bem-sucedido:", user.displayName, user.email);
-      exibirInformacoesDoUsuario(user);
+      mostrarInfoUsuario(user);
     })
     .catch((error) => {
-      console.error("Erro no login com Google:", error);
       alert("Erro no login: " + error.message);
     });
 }
 
+// Verifica se o usuário já está logado quando a página carrega
+auth.onAuthStateChanged((user) => {
+  if (user) {
+    mostrarInfoUsuario(user);
+  }
+});
+
 // Função para exibir informações do usuário
-function exibirInformacoesDoUsuario(user) {
+function mostrarInfoUsuario(user) {
   document.getElementById('infoUsuario').innerHTML = `
     <p><strong>Bem-vindo:</strong> ${user.displayName}</p>
     <p><strong>Email:</strong> ${user.email}</p>
     <img src="${user.photoURL}" width="80">
   `;
 }
-
-// Função de logout
+// Função sair
 window.logout = function () {
-  signOut(auth)
+  auth.signOut()
     .then(() => {
-      console.log("Logout bem-sucedido.");
-      // Redirecione para a página de login ou limpe a interface do usuário
+      document.getElementById('infoUsuario').innerHTML = '<p>Você saiu com sucesso.</p>';
     })
     .catch((error) => {
-      console.error("Erro no logout:", error);
-      alert("Erro no logout: " + error.message);
+      alert("Erro ao sair: " + error.message);
     });
 }
