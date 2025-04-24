@@ -39,9 +39,11 @@ function mostrarInfoUsuario(user) {
   document.getElementById('infoUsuario').innerHTML = `
     <p><strong>Bem-vindo:</strong> ${user.displayName}</p>
     <p><strong>Email:</strong> ${user.email}</p>
-    <img src="${user.photoURL}" width="80">
+    <img src="${user.photoURL}" alt="Foto de perfil">
+    <button onclick="logout()" style="margin-top: 10px;">Sair</button>
   `;
 }
+
 // Função sair
 window.logout = function () {
   auth.signOut()
@@ -109,5 +111,21 @@ window.criarConta = function () {
     })
     .catch((error) => {
       alert("Erro ao criar conta: " + error.message);
+    });
+}
+window.redefinirSenha = function () {
+  const email = document.getElementById('email').value.trim();
+
+  if (!email) {
+    alert("Digite o e-mail para redefinir a senha.");
+    return;
+  }
+
+  auth.sendPasswordResetEmail(email)
+    .then(() => {
+      alert("E-mail de redefinição de senha enviado!");
+    })
+    .catch((error) => {
+      alert("Erro ao enviar e-mail: " + error.message);
     });
 }
