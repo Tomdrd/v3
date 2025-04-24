@@ -37,8 +37,8 @@ auth.onAuthStateChanged((user) => {
 // Função para exibir informações do usuário
 function mostrarInfoUsuario(user) {
   document.getElementById('infoUsuario').innerHTML = `
+  <img src="${user.photoURL}" alt="Foto de perfil">
     <p><strong>Bem-vindo:</strong> ${user.displayName}</p>
-    <img src="${user.photoURL}" alt="Foto de perfil">
   `;
 }
 
