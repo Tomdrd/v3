@@ -40,7 +40,6 @@ function mostrarInfoUsuario(user) {
     <p><strong>Bem-vindo:</strong> ${user.displayName}</p>
     <p><strong>Email:</strong> ${user.email}</p>
     <img src="${user.photoURL}" alt="Foto de perfil">
-    <button onclick="logout()" style="display: none;margin-top: 10px;">Sair</button>
   `;
 }
 
