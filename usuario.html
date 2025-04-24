@@ -1,246 +1,801 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Página de Treinos</title>
-  <link rel="stylesheet" href="styles.css">
-  <style>
-    /* Estilos internos para o formulário e fichas */
-    #fichaForm {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      max-width: 400px;
-      margin: 20px auto;
-      padding: 20px;
-      background-color: #fff7ec;
-      border-radius: 12px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Fichas de Exercícios</title>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            transition: background-color 0.5s ease;
+        }
+        #app {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 90%;
+            max-width: 800px;
+            transition: box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            transition: color 0.3s ease;
+        }
+        header h1{
+             color: #333;
+        }
+        #fichas-container {
+            margin-bottom: 20px;
+        }
+        .ficha {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            background-color: #e9ecef;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        .ficha h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: #4CAF50;
+            transition: color 0.3s ease;
+        }
+        .dia {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        .dia h4 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: #007BFF;
+            transition: color 0.3s ease;
+        }
+        .exercicio {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #fff;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .botoes-exercicio {
+            display: flex;
+            gap: 5px;
+        }
 
-    #fichaForm input {
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-family: inherit;
-    }
+        #formulario-ficha, #formulario-exercicio {
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        #formulario-ficha h2, #formulario-exercicio h2{
+            color: #343a40;
+            transition: color 0.3s ease;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            transition: color 0.3s ease;
+            font-weight: 600;
+        }
+        .form-control {
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            width: 100%;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+            font-size: 1rem;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: #007BFF;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+        }
 
-    #fichaForm button {
-      padding: 10px;
-      background-color: #f8a025;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
+        .btn-primary, .btn-success, .btn-danger, .btn-secondary {
+            border-radius: 5px;
+            padding: 10px 15px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+            border: none;
+        }
+        .btn-primary {
+            background-color: #007BFF;
+            color: #fff;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+        .btn-success {
+            background-color: #28a745;
+            color: #fff;
+        }
+        .btn-success:hover {
+            background-color: #218838;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+            color: #fff;
+        }
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            color: #fff;
+        }
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
 
-    #fichaForm button:hover {
-      background-color: #e89100;
-    }
+        #mensagem-erro, #mensagem-sucesso {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 1rem;
+            text-align: center;
+            font-weight: 600;
+        }
+        #mensagem-erro {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        #mensagem-sucesso {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
 
-    #mensagem {
-      text-align: center;
-      font-weight: bold;
-      margin-top: 10px;
-    }
+        @media (max-width: 600px) {
+            #app {
+                width: 100%;
+                padding: 15px;
+                border-radius: 0;
+                box-shadow: none;
+            }
+            .form-control, .btn {
+                font-size: 0.9rem;
+                padding: 8px;
+            }
+            .ficha {
+                padding: 10px;
+                margin-bottom: 15px;
+            }
+            .exercicio {
+                padding: 8px;
+                font-size: 0.9rem;
+            }
+            #formulario-ficha, #formulario-exercicio {
+                padding: 15px;
+                border-radius: 0;
+                box-shadow: none;
+            }
+        }
 
-    #listaFichas {
-      max-width: 600px;
-      margin: 20px auto;
-      padding: 15px;
-      background-color: #fff7ec;
-      border-radius: 12px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.05);
-    }
-
-    #listaFichas div {
-      margin-bottom: 15px;
-      padding: 10px;
-      background-color: #ffffff;
-      border-radius: 8px;
-      border-left: 5px solid #f8a025;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    }
-
-    #listaFichas button {
-      margin-top: 5px;
-      margin-right: 10px;
-      padding: 6px 10px;
-      font-size: 0.9rem;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      background-color: #f8a025;
-      color: white;
-    }
-
-    #listaFichas button:hover {
-      background-color: #e89100;
-    }
-  </style>
+        /* Estilos para Dark Mode */
+        body.dark-mode {
+            background-color: #121212;
+        }
+        #app.dark-mode {
+            background-color: #1f1f1f;
+            box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
+        }
+        header.dark-mode h1 {
+            color: #fff;
+        }
+        .ficha.dark-mode {
+            background-color: #2a2a2a;
+            border-color: #444;
+        }
+        .ficha.dark-mode h3 {
+            color: #4CAF50;
+        }
+        .dia.dark-mode {
+            background-color: #333;
+            border-color: #555;
+        }
+        .dia.dark-mode h4 {
+            color: #007BFF;
+        }
+        .exercicio.dark-mode {
+            background-color: #444;
+            border-color: #666;
+        }
+        #formulario-ficha.dark-mode, #formulario-exercicio.dark-mode {
+            background-color: #1f1f1f;
+            box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
+        }
+        #formulario-ficha.dark-mode h2, #formulario-exercicio.dark-mode h2 {
+            color: #fff;
+        }
+        .form-group.dark-mode label {
+            color: #eee;
+        }
+        .form-control.dark-mode {
+            background-color: #333;
+            border-color: #555;
+            color: #eee;
+        }
+        .form-control.dark-mode:focus {
+            border-color: #007BFF;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+        }
+        .btn-primary.dark-mode, .btn-success.dark-mode, .btn-danger.dark-mode, .btn-secondary.dark-mode {
+            color: #fff;
+        }
+    </style>
 </head>
 <body>
+    <div id="app">
+        <header>
+            <h1>Fichas de Exercícios</h1>
+        </header>
+        <div id="fichas-container">
+            </div>
 
-  <h2>Nova Ficha de Treino</h2>
-  <form id="fichaForm">
-    <input type="text" id="exercicio" placeholder="Exercício" required />
-    <input type="number" id="series" placeholder="Séries" required />
-    <input type="number" id="repeticoes" placeholder="Repetições" required />
-    <input type="text" id="carga" placeholder="Carga (kg)" required />
-    <button type="submit">Salvar Ficha</button>
-  </form>
+        <form id="formulario-ficha">
+            <h2>Nova Ficha de Exercícios</h2>
+            <div class="form-group">
+                <label for="nome-ficha">Nome da Ficha:</label>
+                <input type="text" id="nome-ficha" class="form-control" placeholder="Ex: Treino de Força" required>
+            </div>
+            <div id="dias-container">
+                </div>
+            <button type="button" id="adicionar-dia" class="btn btn-secondary">Adicionar Dia</button>
+            <button type="submit" class="btn btn-primary">Salvar Ficha</button>
+            <div id="mensagem-erro" style="display: none;"></div>
+            <div id="mensagem-sucesso" style="display: none;"></div>
+        </form>
 
-  <div id="mensagem" style="margin-top: 10px; color: green;"></div>
+        <form id="formulario-exercicio" style="display: none;">
+            <h2>Novo Exercício</h2>
+            <div class="form-group">
+                <label for="nome-exercicio">Nome do Exercício:</label>
+                <input type="text" id="nome-exercicio" class="form-control" placeholder="Ex: Supino Reto" required>
+            </div>
+            <div class="form-group">
+                <label for="series">Séries:</label>
+                <input type="number" id="series" class="form-control" value="3" required>
+            </div>
+            <div class="form-group">
+                <label for="repeticoes">Repetições:</label>
+                <input type="number" id="repeticoes" class="form-control" value="10" required>
+            </div>
+            <div class="form-group">
+                <label for="carga">Carga (kg):</label>
+                <input type="number" id="carga" class="form-control" value="0">
+            </div>
+            <div class="form-group">
+                <label for="observacoes-exercicio">Observações:</label>
+                <textarea id="observacoes-exercicio" class="form-control" rows="3" placeholder="Ex: Manter a postura correta"></textarea>
+            </div>
+            <input type="hidden" id="dia-selecionado">
+            <input type="hidden" id="ficha-selecionada-id">
+            <button type="submit" class="btn btn-success">Salvar Exercício</button>
+            <button type="button" id="cancelar-exercicio" class="btn btn-secondary">Cancelar</button>
+            <div id="mensagem-erro-exercicio" style="display: none;"></div>
+            <div id="mensagem-sucesso-exercicio" style="display: none;"></div>
+        </form>
+    </div>
 
-  <h2>Minhas Fichas Salvas</h2>
-  <div id="listaFichas"></div>
-
-  <!-- Firebase Scripts -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js"></script>
-
-  <script>
-    // Configuração do Firebase
-    const firebaseConfig = {
-      apiKey: "AIzaSyDoDuXxhXa58BSfBtJUUItbk7s9YmlBOGo",
-      authDomain: "meuprojetosaude-54d64.firebaseapp.com",
-      projectId: "meuprojetosaude-54d64",
-      storageBucket: "meuprojetosaude-54d64.firebasestorage.app",
-      messagingSenderId: "105539186714",
-      appId: "1:105539186714:web:c5286a9a3f5b4bc8c161a3",
-      measurementId: "G-HF1H65STC1"
-    };
-
-    const app = firebase.initializeApp(firebaseConfig);
-    const database = firebase.database();
-
-    const fichaForm = document.getElementById("fichaForm");
-    const mensagem = document.getElementById("mensagem");
-    const listaFichas = document.getElementById("listaFichas");
-
-    // Verifica o estado de autenticação do usuário
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        const uid = user.uid;
-
-        console.log("Usuário autenticado:", uid); // Log do ID do usuário autenticado
-
-        // Adiciona nova ficha de treino
-        fichaForm.addEventListener("submit", function (e) {
-          e.preventDefault();
-
-          const exercicio = document.getElementById("exercicio").value;
-          const series = document.getElementById("series").value;
-          const repeticoes = document.getElementById("repeticoes").value;
-          const carga = document.getElementById("carga").value;
-
-          const fichaRef = firebase.database().ref("fichas_treino/" + uid);
-
-          const novaFicha = {
-            exercicio,
-            series,
-            repeticoes,
-            carga,
-            data: new Date().toLocaleString()
-          };
-
-          fichaRef.push(novaFicha)
-            .then(() => {
-              mensagem.textContent = "Ficha salva com sucesso!";
-              fichaForm.reset();
-            })
-            .catch((error) => {
-              mensagem.textContent = "Erro ao salvar: " + error.message;
-            });
-        });
-
-        // Exibe as fichas salvas do usuário
-        const fichaRef = firebase.database().ref("fichas_treino/" + uid);
-
-        fichaRef.on("value", (snapshot) => {
-          const dados = snapshot.val();
-          console.log("Dados recebidos do Firebase:", dados); // Log dos dados recebidos
-
-          listaFichas.innerHTML = "";
-
-          if (dados) {
-            Object.entries(dados).forEach(([key, ficha]) => {
-              const div = document.createElement("div");
-              div.innerHTML = `
-                <strong>${ficha.exercicio}</strong><br>
-                Séries: ${ficha.series} | Repetições: ${ficha.repeticoes} | Carga: ${ficha.carga}<br>
-                <small>Registrado em: ${ficha.data}</small><br>
-                <button onclick="editarFicha('${key}', '${ficha.exercicio}', '${ficha.series}', '${ficha.repeticoes}', '${ficha.carga}')">Editar</button>
-                <button onclick="excluirFicha('${key}')">Excluir</button>
-                <hr>
-              `;
-              listaFichas.appendChild(div);
-            });
-          } else {
-            listaFichas.innerHTML = "<p>Nenhuma ficha cadastrada ainda.</p>";
-          }
-        });
-      } else {
-        mensagem.textContent = "Você precisa estar logado.";
-      }
-    });
-
-    // Função para excluir ficha
-    function excluirFicha(id) {
-      const uid = firebase.auth().currentUser.uid;
-      const fichaRef = firebase.database().ref("fichas_treino/" + uid + "/" + id);
-      fichaRef.remove()
-        .then(() => {
-          alert("Ficha excluída com sucesso!");
-        })
-        .catch((error) => {
-          alert("Erro ao excluir: " + error.message);
-        });
-    }
-
-    // Função para editar ficha
-    function editarFicha(id, exercicio, series, repeticoes, carga) {
-      document.getElementById("exercicio").value = exercicio;
-      document.getElementById("series").value = series;
-      document.getElementById("repeticoes").value = repeticoes;
-      document.getElementById("carga").value = carga;
-
-      const form = document.getElementById("fichaForm");
-      const botao = form.querySelector("button");
-      botao.textContent = "Atualizar Ficha";
-
-      form.onsubmit = function (e) {
-        e.preventDefault();
-        const uid = firebase.auth().currentUser.uid;
-
-        const fichaAtualizada = {
-          exercicio: document.getElementById("exercicio").value,
-          series: document.getElementById("series").value,
-          repeticoes: document.getElementById("repeticoes").value,
-          carga: document.getElementById("carga").value,
-          data: new Date().toLocaleString()
+    <script>
+        // Inicializar o Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyDoDuXxhXa58BSfBtJUUItbk7s9YmlBOGo",
+            authDomain: "meuprojetosaude-54d64.firebaseapp.com",
+            databaseURL: "https://meuprojetosaude-54d64-default-rtdb.firebaseio.com",
+            projectId: "meuprojetosaude-54d64",
+            storageBucket: "meuprojetosaude-54d64.firebasestorage.app",
+            messagingSenderId: "105539186714",
+            appId: "1:105539186714:web:c5286a9a3f5b4bc8c161a3",
+            measurementId: "G-HF1H65STC1"
         };
+        const app = firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
 
-        firebase.database().ref("fichas_treino/" + uid + "/" + id).set(fichaAtualizada)
-          .then(() => {
-            alert("Ficha atualizada com sucesso!");
-            form.reset();
-            botao.textContent = "Salvar Ficha";
-            form.onsubmit = originalSubmitHandler;
-          })
-          .catch((error) => {
-            alert("Erro ao atualizar: " + error.message);
-          });
-      };
-    }
+        // Referências de elementos do DOM
+        const fichasContainer = document.getElementById('fichas-container');
+        const formularioFicha = document.getElementById('formulario-ficha');
+        const nomeFichaInput = document.getElementById('nome-ficha');
+        const diasContainer = document.getElementById('dias-container');
+        const adicionarDiaButton = document.getElementById('adicionar-dia');
+        const formularioExercicio = document.getElementById('formulario-exercicio');
+        const nomeExercicioInput = document.getElementById('nome-exercicio');
+        const seriesInput = document.getElementById('series');
+        const repeticoesInput = document.getElementById('repeticoes');
+        const cargaInput = document.getElementById('carga');
+        const observacoesExercicioInput = document.getElementById('observacoes-exercicio');
+        const diaSelecionadoInput = document.getElementById('dia-selecionado');
+        const fichaSelecionadaIdInput = document.getElementById('ficha-selecionada-id');
+        const cancelarExercicioButton = document.getElementById('cancelar-exercicio');
+        const mensagemErro = document.getElementById('mensagem-erro');
+        const mensagemSucesso = document.getElementById('mensagem-sucesso');
+        const mensagemErroExercicio = document.getElementById('mensagem-erro-exercicio');
+        const mensagemSucessoExercicio = document.getElementById('mensagem-sucesso-exercicio');
+        const body = document.querySelector('body');
+        const appElement = document.getElementById('app');
+        const headerElement = document.querySelector('header');
 
-    // Guardar o comportamento original do submit
-    const originalSubmitHandler = document.getElementById("fichaForm").onsubmit;
-  </script>
 
+        // Dias da semana fixos
+        const diasSemana = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
+        let diasAdicionados = [];
+        let editandoFichaId = null;
+        let editandoExercicioId = null;
+        let darkModeAtivo = false; // Variável para controlar o estado do Dark Mode
+
+        // Função para exibir mensagem de erro
+        function exibirMensagemErro(mensagem) {
+            mensagemErro.textContent = mensagem;
+            mensagemErro.style.display = 'block';
+            setTimeout(() => {
+                mensagemErro.style.display = 'none';
+            }, 5000);
+        }
+
+        // Função para exibir mensagem de sucesso
+        function exibirMensagemSucesso(mensagem) {
+            mensagemSucesso.textContent = mensagem;
+            mensagemSucesso.style.display = 'block';
+            setTimeout(() => {
+                mensagemSucesso.style.display = 'none';
+            }, 5000);
+        }
+
+        // Função para buscar o nome do dia da semana
+        function getNomeDiaSemana(dia) {
+            switch (dia) {
+                case 'A': return 'Segunda-feira';
+                case 'B': return 'Terça-feira';
+                case 'C': return 'Quarta-feira';
+                case 'D': return 'Quinta-feira';
+                case 'E': return 'Sexta-feira';
+                case 'F': return 'Sábado';
+                case 'G': return 'Domingo';
+                default: return 'Dia ' + dia;
+            }
+        }
+
+        // Função para adicionar um novo dia à ficha
+        function adicionarDia() {
+            if (diasAdicionados.length >= diasSemana.length) {
+                exibirMensagemErro('Você já adicionou todos os dias da semana!');
+                return;
+            }
+
+            const proximoDia = diasSemana.find(dia => !diasAdicionados.includes(dia));
+            diasAdicionados.push(proximoDia);
+
+            const novoDiaDiv = document.createElement('div');
+            novoDiaDiv.classList.add('dia');
+            if (darkModeAtivo) {
+                novoDiaDiv.classList.add('dark-mode');
+            }
+            novoDiaDiv.innerHTML = `
+                <h4>${getNomeDiaSemana(proximoDia)} (${proximoDia})</h4>
+                <div id="exercicios-dia-${proximoDia}">
+                    </div>
+                <button type="button" class="btn btn-success adicionar-exercicio-btn" data-dia="${proximoDia}">Adicionar Exercício</button>
+            `;
+            diasContainer.appendChild(novoDiaDiv);
+
+            const adicionarExercicioBtn = novoDiaDiv.querySelector('.adicionar-exercicio-btn');
+            adicionarExercicioBtn.addEventListener('click', () => {
+                exibirFormularioExercicio(proximoDia);
+            });
+        }
+
+        // Função para exibir o formulário de exercícios
+        function exibirFormularioExercicio(dia) {
+            diaSelecionadoInput.value = dia;
+            formularioExercicio.style.display = 'block';
+            formularioFicha.style.display = 'none';
+            editandoExercicioId = null;
+            nomeExercicioInput.value = '';
+            seriesInput.value = '3';
+            repeticoesInput.value = '10';
+            cargaInput.value = '0';
+            observacoesExercicioInput.value = '';
+        }
+
+        // Função para salvar um novo exercício
+        function salvarExercicio(event) {
+            event.preventDefault();
+
+            const nomeExercicio = nomeExercicioInput.value.trim();
+            const series = parseInt(seriesInput.value);
+            const repeticoes = parseInt(repeticoesInput.value);
+            const carga = parseInt(cargaInput.value);
+            const observacoes = observacoesExercicioInput.value.trim();
+            const dia = diaSelecionadoInput.value;
+            const fichaId = fichaSelecionadaIdInput.value;
+
+            if (nomeExercicio === '' || isNaN(series) || isNaN(repeticoes) || series <= 0 || repeticoes <= 0) {
+                mensagemErroExercicio.textContent = 'Por favor, preencha todos os campos corretamente.';
+                mensagemErroExercicio.style.display = 'block';
+                setTimeout(() => {
+                    mensagemErroExercicio.style.display = 'none';
+                }, 5000);
+                return;
+            }
+
+            const exercicioData = {
+                nome: nomeExercicio,
+                series: series,
+                repeticoes: repeticoes,
+                carga: carga,
+                observacoes: observacoes
+            };
+
+            let exercicioRef;
+            if (editandoExercicioId) {
+                exercicioRef = database.ref(`usuarios/${localStorage.getItem('usuarioId')}/fichas/${fichaId}/dias/${dia}/exercicios/${editandoExercicioId}`);
+            } else {
+                exercicioRef = database.ref(`usuarios/${localStorage.getItem('usuarioId')}/fichas/${fichaId}/dias/${dia}/exercicios`).push();
+            }
+
+            exercicioRef.set(exercicioData)
+                .then(() => {
+                    mensagemSucessoExercicio.textContent = editandoExercicioId ? 'Exercício atualizado com sucesso!' : 'Exercício adicionado com sucesso!';
+                    mensagemSucessoExercicio.style.display = 'block';
+                    formularioExercicio.style.display = 'none';
+                    formularioFicha.style.display = 'block';
+                    carregarFichas(); // Recarrega as fichas para exibir o novo exercício
+                    setTimeout(() => {
+                        mensagemSucessoExercicio.style.display = 'none';
+                    }, 5000);
+                })
+                .catch((error) => {
+                    mensagemErroExercicio.textContent = 'Erro ao salvar exercício: ' + error.message;
+                    mensagemErroExercicio.style.display = 'block';
+                    setTimeout(() => {
+                        mensagemErroExercicio.style.display = 'none';
+                    }, 5000);
+                });
+        }
+
+        // Função para carregar os exercícios de um dia específico
+        function carregarExercicios(fichaId, dia, diaDiv) {
+            const exerciciosRef = database.ref(`usuarios/${localStorage.getItem('usuarioId')}/fichas/${fichaId}/dias/${dia}/exercicios`);
+            exerciciosRef.on('value', (snapshot) => {
+                const exerciciosDoDia = snapshot.val();
+                const exerciciosDiaContainer = diaDiv.querySelector(`#exercicios-dia-${dia}`);
+                exerciciosDiaContainer.innerHTML = ''; // Limpa o conteúdo anterior
+
+                if (exerciciosDoDia) {
+                    for (const exercicioId in exerciciosDoDia) {
+                        const exercicio = exerciciosDoDia[exercicioId];
+                        const exercicioDiv = document.createElement('div');
+                        exercicioDiv.classList.add('exercicio');
+                        if (darkModeAtivo) {
+                            exercicioDiv.classList.add('dark-mode');
+                        }
+                        exercicioDiv.innerHTML = `
+                            <p>${exercicio.nome} - ${exercicio.series} séries x ${exercicio.repeticoes} repetições ${exercicio.carga > 0 ? '- Carga: ' + exercicio.carga + 'kg' : ''} ${exercicio.observacoes ? '- Obs: ' + exercicio.observacoes : ''}</p>
+                            <div class="botoes-exercicio">
+                                <button class="btn btn-primary btn-sm editar-exercicio-btn" data-dia="${dia}" data-exercicio-id="${exercicioId}">Editar</button>
+                                <button class="btn btn-danger btn-sm excluir-exercicio-btn" data-dia="${dia}" data-exercicio-id="${exercicioId}">Excluir</button>
+                            </div>
+                        `;
+                        exerciciosDiaContainer.appendChild(exercicioDiv);
+
+                        const editarExercicioBtn = exercicioDiv.querySelector('.editar-exercicio-btn');
+                        editarExercicioBtn.addEventListener('click', () => {
+                            editarExercicio(fichaId, dia, exercicioId);
+                        });
+
+                        const excluirExercicioBtn = exercicioDiv.querySelector('.excluir-exercicio-btn');
+                        excluirExercicioBtn.addEventListener('click', () => {
+                            excluirExercicio(fichaId, dia, exercicioId);
+                        });
+                    }
+                }
+            });
+        }
+
+        // Função para editar um exercício
+        function editarExercicio(fichaId, dia, exercicioId) {
+            const exercicioRef = database.ref(`usuarios/${localStorage.getItem('usuarioId')}/fichas/${fichaId}/dias/${dia}/exercicios/${exercicioId}`);
+            exercicioRef.once('value', (snapshot) => {
+                const exercicio = snapshot.val();
+                if (exercicio) {
+                    editandoExercicioId = exercicioId;
+                    diaSelecionadoInput.value = dia;
+                    fichaSelecionadaIdInput.value = fichaId;
+                    nomeExercicioInput.value = exercicio.nome;
+                    seriesInput.value = exercicio.series;
+                    repeticoesInput.value = exercicio.repeticoes;
+                    cargaInput.value = exercicio.carga;
+                    observacoesExercicioInput.value = exercicio.observacoes;
+                    formularioExercicio.style.display = 'block';
+                    formularioFicha.style.display = 'none';
+                }
+            });
+        }
+
+        // Função para excluir um exercício
+        function excluirExercicio(fichaId, dia, exercicioId) {
+            const exercicioRef = database.ref(`usuarios/${localStorage.getItem('usuarioId')}/fichas/${fichaId}/dias/${dia}/exercicios/${exercicioId}`);
+            exercicioRef.remove()
+                .then(() => {
+                    exibirMensagemSucesso('Exercício excluído com sucesso!');
+                    carregarFichas(); // Recarregaas fichas para atualizar a exibição
+})
+                .catch((error) => {
+                    exibirMensagemErro('Erro ao excluir exercício: ' + error.message);
+                });
+        }
+
+        // Função para salvar uma nova ficha de exercícios
+        function salvarFicha(event) {
+            event.preventDefault();
+
+            const nomeFicha = nomeFichaInput.value.trim();
+
+            if (nomeFicha === '' || diasAdicionados.length === 0) {
+                exibirMensagemErro('Por favor, preencha o nome da ficha e adicione pelo menos um dia de treino.');
+                return;
+            }
+
+            const fichaData = {
+                nome_da_ficha: nomeFicha,
+                dias: {}
+            };
+
+             // Adiciona os dias com um objeto vazio para exercícios
+            diasAdicionados.forEach(dia => {
+                fichaData.dias[dia] = { exercicios: {} };
+            });
+            let fichaRef;
+            if (editandoFichaId) {
+                fichaRef = database.ref(`usuarios/${localStorage.getItem('usuarioId')}/fichas/${editandoFichaId}`);
+            } else {
+                 fichaRef = database.ref(`usuarios/${localStorage.getItem('usuarioId')}/fichas`).push();
+            }
+            fichaRef.set(fichaData)
+                .then(() => {
+                    mensagemSucesso.textContent = editandoFichaId ? 'Ficha de exercícios atualizada com sucesso!' : 'Ficha de exercícios salva com sucesso!';
+                    mensagemSucesso.style.display = 'block';
+                    formularioFicha.reset();
+                    diasAdicionados = [];
+                    diasContainer.innerHTML = ''; // Limpa os dias adicionados na UI
+                    formularioFicha.style.display = 'block';
+                    formularioExercicio.style.display = 'none';
+                    editandoFichaId = null;
+                    carregarFichas(); // Recarrega as fichas para exibir a nova ficha
+                    setTimeout(() => {
+                        mensagemSucesso.style.display = 'none';
+                    }, 5000);
+                })
+                .catch((error) => {
+                    mensagemErro.textContent = 'Erro ao salvar ficha: ' + error.message;
+                    mensagemErro.style.display = 'block';
+                    setTimeout(() => {
+                        mensagemErro.style.display = 'none';
+                    }, 5000);
+                });
+        }
+
+        // Função para carregar as fichas de exercícios do Firebase
+        function carregarFichas() {
+            const userId = localStorage.getItem('usuarioId');
+            if (!userId) {
+                console.error('Usuário não autenticado.');
+                return;
+            }
+
+            const fichasRef = database.ref(`usuarios/${userId}/fichas`);
+            fichasRef.on('value', (snapshot) => {
+                fichasContainer.innerHTML = ''; // Limpa o container de fichas
+                const fichas = snapshot.val();
+
+                if (fichas) {
+                    for (const fichaId in fichas) {
+                        const ficha = fichas[fichaId];
+                        const fichaDiv = document.createElement('div');
+                        fichaDiv.classList.add('ficha');
+                         if (darkModeAtivo) {
+                            fichaDiv.classList.add('dark-mode');
+                        }
+                        fichaDiv.innerHTML = `
+                            <h3>${ficha.nome_da_ficha}</h3>
+                            <div id="dias-ficha-${fichaId}">
+                                </div>
+                            <button class="btn btn-primary btn-sm editar-ficha-btn" data-ficha-id="${fichaId}">Editar Ficha</button>
+                            <button class="btn btn-danger btn-sm excluir-ficha-btn" data-ficha-id="${fichaId}">Excluir Ficha</button>
+                        `;
+                        fichasContainer.appendChild(fichaDiv);
+
+                        const diasFichaContainer = fichaDiv.querySelector(`#dias-ficha-${fichaId}`);
+                        for (const dia in ficha.dias) {
+                            const diaDiv = document.createElement('div');
+                            diaDiv.classList.add('dia');
+                            if (darkModeAtivo) {
+                                diaDiv.classList.add('dark-mode');
+                            }
+                            diaDiv.innerHTML = `
+                                <h4>${getNomeDiaSemana(dia)} (${dia})</h4>
+                                <div id="exercicios-dia-${dia}">
+                                    </div>
+                                <button type="button" class="btn btn-success adicionar-exercicio-btn" data-dia="${dia}" data-ficha-id="${fichaId}">Adicionar Exercício</button>
+                            `;
+                            diasFichaContainer.appendChild(diaDiv);
+
+                            const adicionarExercicioBtn = diaDiv.querySelector('.adicionar-exercicio-btn');
+                            adicionarExercicioBtn.addEventListener('click', () => {
+                                exibirFormularioExercicio(dia);
+                                fichaSelecionadaIdInput.value = fichaId;
+                            });
+
+                            carregarExercicios(fichaId, dia, diaDiv); // Carrega os exercícios de cada dia
+                        }
+                        const editarFichaBtn = fichaDiv.querySelector('.editar-ficha-btn');
+                        editarFichaBtn.addEventListener('click', () => {
+                            editarFicha(fichaId);
+                        });
+
+                        const excluirFichaBtn = fichaDiv.querySelector('.excluir-ficha-btn');
+                        excluirFichaBtn.addEventListener('click', () => {
+                            excluirFicha(fichaId);
+                        });
+                    }
+                } else {
+                    fichasContainer.innerHTML = '<p>Nenhuma ficha de exercícios encontrada.</p>';
+                }
+            });
+        }
+
+        // Função para editar uma ficha
+        function editarFicha(fichaId) {
+            const fichaRef = database.ref(`usuarios/${localStorage.getItem('usuarioId')}/fichas/${fichaId}`);
+            fichaRef.once('value', (snapshot) => {
+                const ficha = snapshot.val();
+                if (ficha) {
+                    editandoFichaId = fichaId;
+                    nomeFichaInput.value = ficha.nome_da_ficha;
+                    diasAdicionados = Object.keys(ficha.dias);
+                    diasContainer.innerHTML = ''; // Limpa os dias
+                    diasAdicionados.forEach(dia => {
+                        const novoDiaDiv = document.createElement('div');
+                        novoDiaDiv.classList.add('dia');
+                        if (darkModeAtivo) {
+                            novoDiaDiv.classList.add('dark-mode');
+                        }
+                        novoDiaDiv.innerHTML = `
+                            <h4>${getNomeDiaSemana(dia)} (${dia})</h4>
+                            <div id="exercicios-dia-${dia}">
+                                </div>
+                            <button type="button" class="btn btn-success adicionar-exercicio-btn" data-dia="${dia}">Adicionar Exercício</button>
+                        `;
+                        diasContainer.appendChild(novoDiaDiv);
+
+                         const adicionarExercicioBtn = novoDiaDiv.querySelector('.adicionar-exercicio-btn');
+                        adicionarExercicioBtn.addEventListener('click', () => {
+                            exibirFormularioExercicio(dia);
+                        });
+                        carregarExercicios(fichaId, dia, novoDiaDiv);
+                    });
+                    formularioFicha.style.display = 'block';
+                    formularioExercicio.style.display = 'none';
+                }
+            });
+        }
+
+        // Função para excluir uma ficha
+        function excluirFicha(fichaId) {
+            const fichaRef = database.ref(`usuarios/${localStorage.getItem('usuarioId')}/fichas/${fichaId}`);
+            fichaRef.remove()
+                .then(() => {
+                    exibirMensagemSucesso('Ficha de exercícios excluída com sucesso!');
+                    carregarFichas(); // Recarrega as fichas para atualizar a exibição
+                })
+                .catch((error) => {
+                    exibirMensagemErro('Erro ao excluir ficha: ' + error.message);
+                });
+        }
+
+        // Event listeners
+        adicionarDiaButton.addEventListener('click', adicionarDia);
+        formularioFicha.addEventListener('submit', salvarFicha);
+        formularioExercicio.addEventListener('submit', salvarExercicio);
+        cancelarExercicioButton.addEventListener('click', () => {
+            formularioExercicio.style.display = 'none';
+            formularioFicha.style.display = 'block';
+            editandoExercicioId = null;
+        });
+
+        // Recuperar o ID do usuário do localStorage (simulação de autenticação)
+        const usuarioId = localStorage.getItem('usuarioId');
+        if (!usuarioId) {
+            // Se o usuário não estiver logado, redirecione para a página de login (ou exiba uma mensagem)
+            alert('Por favor, faça login para acessar suas fichas de exercícios.');
+            // Substitua 'login.html' pelo caminho da sua página de login
+            window.location.href = 'login.html';
+        } else {
+            // Se o usuário estiver logado, carregue as fichas
+            carregarFichas();
+        }
+
+        // Função para alternar entre Dark Mode e Light Mode
+        function toggleDarkMode() {
+            darkModeAtivo = !darkModeAtivo; // Inverte o estado do Dark Mode
+            body.classList.toggle('dark-mode', darkModeAtivo);
+            appElement.classList.toggle('dark-mode', darkModeAtivo);
+            headerElement.classList.toggle('dark-mode', darkModeAtivo);
+
+            // Salva a preferência do usuário no localStorage
+            localStorage.setItem('darkMode', darkModeAtivo);
+
+            // Atualiza os estilos dos elementos existentes
+            const fichas = document.querySelectorAll('.ficha');
+            fichas.forEach(ficha => ficha.classList.toggle('dark-mode', darkModeAtivo));
+
+            const dias = document.querySelectorAll('.dia');
+            dias.forEach(dia => dia.classList.toggle('dark-mode', darkModeAtivo));
+
+            const exercicios = document.querySelectorAll('.exercicio');
+            exercicios.forEach(exercicio => exercicio.classList.toggle('dark-mode', darkModeAtivo));
+
+            const formulariosFicha = document.querySelectorAll('#formulario-ficha, #formulario-exercicio');
+            formulariosFicha.forEach(formulario => formulario.classList.toggle('dark-mode', darkModeAtivo));
+
+            const formGroups = document.querySelectorAll('.form-group');
+            formGroups.forEach(formGroup => formGroup.classList.toggle('dark-mode', darkModeAtivo));
+
+            const formControls = document.querySelectorAll('.form-control');
+            formControls.forEach(formControl => formControl.classList.toggle('dark-mode', darkModeAtivo));
+
+            const botoes = document.querySelectorAll('.btn-primary, .btn-success, .btn-danger, .btn-secondary');
+            botoes.forEach(botao => botao.classList.toggle('dark-mode', darkModeAtivo));
+        }
+
+        // Verifica a preferência do usuário ao carregar a página
+        const savedDarkMode = localStorage.getItem('darkMode');
+        if (savedDarkMode === 'true') {
+            toggleDarkMode(); // Aplica o Dark Mode se estiver ativado
+        }
+
+        // Adiciona um botão para alternar entre os modos (opcional)
+        const toggleDarkModeButton = document.createElement('button');
+        toggleDarkModeButton.textContent = darkModeAtivo ? 'Light Mode' : 'Dark Mode';
+        toggleDarkModeButton.classList.add('btn', 'btn-secondary');
+        toggleDarkModeButton.style.marginTop = '20px';
+        toggleDarkModeButton.addEventListener('click', toggleDarkMode);
+        appElement.appendChild(toggleDarkModeButton);
+    </script>
 </body>
 </html>
