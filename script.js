@@ -171,10 +171,7 @@ function getInfoIcon(classificacao) {
 `;
 }
 
-function toggleInfoText(event) {
-    const infoText = event.target.nextElementSibling;
-    infoText.style.display = infoText.style.display === "block" ? "none" : "block";
-}
+
 
    // CONTADOR DE ÁGUA
    let totalAgua = 0;

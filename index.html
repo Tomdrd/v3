@@ -18,10 +18,6 @@
 
     <title>Estética e Saúde Academia</title>
 
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-    <link rel="stylesheet" href="login-style.css">
-    <script src="app.js"></script>
 </head>
 
 <body>
@@ -32,8 +28,9 @@
         <div class="menu-icon" onclick="toggleMenu()">☰</div>
         <nav id="menu">
             <a href="login">Login</a>
+            <a href="usuario.html">Usuário</a>
             <a href="blog.html">Blog</a>
-            <div id="infoUsuario">test</div>
+
         </nav>
     </header>
 
@@ -220,7 +217,35 @@
     </div>
     
     <script src="script.js"></script>
-    
+    <!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js"></script>
+
+<script>
+  // Configuração do Firebase
+  const firebaseConfig = {
+    apiKey: "AIzaSyDoDuXxhXa58BSfBtJUUItbk7s9YmlBOGo",
+    authDomain: "meuprojetosaude-54d64.firebaseapp.com",
+    projectId: "meuprojetosaude-54d64",
+    storageBucket: "meuprojetosaude-54d64.firebasestorage.app",
+    messagingSenderId: "105539186714",
+    appId: "1:105539186714:web:c5286a9a3f5b4bc8c161a3",
+    measurementId: "G-HF1H65STC1"
+  };
+
+  // Inicializar Firebase
+  firebase.initializeApp(firebaseConfig);
+
+  // Serviços do Firebase
+  const auth = firebase.auth();
+  const db = firebase.firestore(); // 🔥 Firestore ativado aqui
+</script>
+
+<!-- Seu script JS -->
+<script src="main.js"></script> <!-- ou outro arquivo com a lógica do IMC -->
+
+
 
 </body>
 
