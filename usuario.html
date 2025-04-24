@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema de Fichas de Exercícios</title>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
@@ -310,21 +311,58 @@
             <div id="mensagem-erro-exercicio" style="display: none;"></div>
             <div id="mensagem-sucesso-exercicio" style="display: none;"></div>
         </form>
+         <div id="login-container" style="display: none;">
+            <h2>Login</h2>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" class="form-control" placeholder="Digite seu email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Senha:</label>
+                <input type="password" id="password" class="form-control" placeholder="Digite sua senha" required>
+            </div>
+            <button type="button" id="login-button" class="btn btn-primary">Entrar</button>
+            <div id="login-error" style="display: none;"></div>
+        </div>
+
+        <div id="cadastro-container" style="display: none;">
+            <h2>Cadastro</h2>
+            <div class="form-group">
+                <label for="nome-cadastro">Nome:</label>
+                <input type="text" id="nome-cadastro" class="form-control" placeholder="Digite seu nome" required>
+            </div>
+            <div class="form-group">
+                <label for="email-cadastro">Email:</label>
+                <input type="email" id="email-cadastro" class="form-control" placeholder="Digite seu email" required>
+            </div>
+            <div class="form-group">
+                <label for="senha-cadastro">Senha:</label>
+                <input type="password" id="senha-cadastro" class="form-control" placeholder="Digite sua senha" required>
+            </div>
+            <button type="button" id="cadastrar-button" class="btn btn-success">Cadastrar</button>
+            <div id="cadastro-erro" style="display: none;"></div>
+        </div>
+        <div id="auth-buttons" style="display: flex; justify-content: center; margin-top: 20px;">
+            <button type="button" id="mostrar-login" class="btn btn-secondary" style="margin-right: 10px;">Login</button>
+            <button type="button" id="mostrar-cadastro" class="btn btn-secondary">Cadastro</button>
+            <button type="button" id="logout-button" class="btn btn-danger" style="display:none;">Logout</button>
+        </div>
     </div>
 
     <script>
-        // Inicializar o Firebase
+       // Inicializar o Firebase
         const firebaseConfig = {
-            apiKey: "AIzaSyDoDuXxhXa58BSfBtJUUItbk7s9YmlBOGo",
-            authDomain: "meuprojetosaude-54d64.firebaseapp.com",
-            databaseURL: "https://meuprojetosaude-54d64-default-rtdb.firebaseio.com",
-            projectId: "meuprojetosaude-54d64",
-            storageBucket: "meuprojetosaude-54d64.firebasestorage.app",
-            messagingSenderId: "105539186714",
-            appId: "1:105539186714:web:c5286a9a3f5b4bc8c161a3",
-            measurementId: "G-HF1H65STC1"
+            apiKey: "SUA_API_KEY",
+            authDomain: "SEU_AUTH_DOMAIN",
+            databaseURL: "SEU_DATABASE_URL",
+            projectId: "SEU_PROJECT_ID",
+            storageBucket: "SEU_STORAGE_BUCKET",
+            messagingSenderId: "SEU_MESSAGING_SENDER_ID",
+            appId: "SEU_APP_ID",
+            measurementId: "SEU_MEASUREMENT_ID"
         };
         const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
         const database = firebase.database();
 
         // Referências de elementos do DOM
@@ -349,6 +387,20 @@
         const body = document.querySelector('body');
         const appElement = document.getElementById('app');
         const headerElement = document.querySelector('header');
+        const loginContainer = document.getElementById('login-container');
+        const cadastroContainer = document.getElementById('cadastro-container');
+        const mostrarLoginButton = document.getElementById('mostrar-login');
+        const mostrarCadastroButton = document.getElementById('mostrar-cadastro');
+        const loginButton = document.getElementById('login-button');
+        const cadastroButton = document.getElementById('cadastrar-button');
+        const logoutButton = document.getElementById('logout-button');
+        const emailInputLogin = document.getElementById('email');
+        const passwordInputLogin = document.getElementById('password');
+        const emailInputCadastro = document.getElementById('email-cadastro');
+        const passwordInputCadastro = document.getElementById('senha-cadastro');
+        const nomeInputCadastro = document.getElementById('nome-cadastro');
+        const loginError = document.getElementById('login-error');
+        const cadastroError = document.getElementById('cadastro-erro');
 
 
         // Dias da semana fixos
@@ -357,6 +409,7 @@
         let editandoFichaId = null;
         let editandoExercicioId = null;
         let darkModeAtivo = false; // Variável para controlar o estado do Dark Mode
+        let usuarioLogado = null;
 
         // Função para exibir mensagem de erro
         function exibirMensagemErro(mensagem) {
@@ -463,9 +516,9 @@
 
             let exercicioRef;
             if (editandoExercicioId) {
-                exercicioRef = database.ref(`usuarios/${localStorage.getItem('usuarioId')}/fichas/${fichaId}/dias/${dia}/exercicios/${editandoExercicioId}`);
+                exercicioRef = database.ref(`usuarios/${usuarioLogado.uid}/fichas/${fichaId}/dias/${dia}/exercicios/${editandoExercicioId}`);
             } else {
-                exercicioRef = database.ref(`usuarios/${localStorage.getItem('usuarioId')}/fichas/${fichaId}/dias/${dia}/exercicios`).push();
+                exercicioRef = database.ref(`usuarios/${usuarioLogado.uid}/fichas/${fichaId}/dias/${dia}/exercicios`).push();
             }
 
             exercicioRef.set(exercicioData)
@@ -490,7 +543,8 @@
 
         // Função para carregar os exercícios de um dia específico
         function carregarExercicios(fichaId, dia, diaDiv) {
-            const exerciciosRef = database.ref(`usuarios/${localStorage.getItem('usuarioId')}/fichas/${fichaId}/dias/${dia}/exercicios`);
+             if (!usuarioLogado) return;
+            const exerciciosRef = database.ref(`usuarios/${usuarioLogado.uid}/fichas/${fichaId}/dias/${dia}/exercicios`);
             exerciciosRef.on('value', (snapshot) => {
                 const exerciciosDoDia = snapshot.val();
                 const exerciciosDiaContainer = diaDiv.querySelector(`#exercicios-dia-${dia}`);
@@ -501,7 +555,7 @@
                         const exercicio = exerciciosDoDia[exercicioId];
                         const exercicioDiv = document.createElement('div');
                         exercicioDiv.classList.add('exercicio');
-                        if (darkModeAtivo) {
+                        if(darkModeAtivo) {
                             exercicioDiv.classList.add('dark-mode');
                         }
                         exercicioDiv.innerHTML = `
@@ -529,7 +583,8 @@
 
         // Função para editar um exercício
         function editarExercicio(fichaId, dia, exercicioId) {
-            const exercicioRef = database.ref(`usuarios/${localStorage.getItem('usuarioId')}/fichas/${fichaId}/dias/${dia}/exercicios/${exercicioId}`);
+             if (!usuarioLogado) return;
+            const exercicioRef = database.ref(`usuarios/${usuarioLogado.uid}/fichas/${fichaId}/dias/${dia}/exercicios/${exercicioId}`);
             exercicioRef.once('value', (snapshot) => {
                 const exercicio = snapshot.val();
                 if (exercicio) {
@@ -549,7 +604,8 @@
 
         // Função para excluir um exercício
         function excluirExercicio(fichaId, dia, exercicioId) {
-            const exercicioRef = database.ref(`usuarios/${localStorage.getItem('usuarioId')}/fichas/${fichaId}/dias/${dia}/exercicios/${exercicioId}`);
+             if (!usuarioLogado) return;
+            const exercicioRef = database.ref(`usuarios/${usuarioLogado.uid}/fichas/${fichaId}/dias/${dia}/exercicios/${exercicioId}`);
             exercicioRef.remove()
                 .then(() => {
                     exibirMensagemSucesso('Exercício excluído com sucesso!');
@@ -582,9 +638,9 @@
             });
             let fichaRef;
             if (editandoFichaId) {
-                fichaRef = database.ref(`usuarios/${localStorage.getItem('usuarioId')}/fichas/${editandoFichaId}`);
+                fichaRef = database.ref(`usuarios/${usuarioLogado.uid}/fichas/${editandoFichaId}`);
             } else {
-                 fichaRef = database.ref(`usuarios/${localStorage.getItem('usuarioId')}/fichas`).push();
+                 fichaRef = database.ref(`usuarios/${usuarioLogado.uid}/fichas`).push();
             }
             fichaRef.set(fichaData)
                 .then(() => {
@@ -612,13 +668,8 @@
 
         // Função para carregar as fichas de exercícios do Firebase
         function carregarFichas() {
-            const userId = localStorage.getItem('usuarioId');
-            if (!userId) {
-                console.error('Usuário não autenticado.');
-                return;
-            }
-
-            const fichasRef = database.ref(`usuarios/${userId}/fichas`);
+            if (!usuarioLogado) return;
+            const fichasRef = database.ref(`usuarios/${usuarioLogado.uid}/fichas`);
             fichasRef.on('value', (snapshot) => {
                 fichasContainer.innerHTML = ''; // Limpa o container de fichas
                 const fichas = snapshot.val();
@@ -681,7 +732,8 @@
 
         // Função para editar uma ficha
         function editarFicha(fichaId) {
-            const fichaRef = database.ref(`usuarios/${localStorage.getItem('usuarioId')}/fichas/${fichaId}`);
+             if (!usuarioLogado) return;
+            const fichaRef = database.ref(`usuarios/${usuarioLogado.uid}/fichas/${fichaId}`);
             fichaRef.once('value', (snapshot) => {
                 const ficha = snapshot.val();
                 if (ficha) {
@@ -717,7 +769,8 @@
 
         // Função para excluir uma ficha
         function excluirFicha(fichaId) {
-            const fichaRef = database.ref(`usuarios/${localStorage.getItem('usuarioId')}/fichas/${fichaId}`);
+             if (!usuarioLogado) return;
+            const fichaRef = database.ref(`usuarios/${usuarioLogado.uid}/fichas/${fichaId}`);
             fichaRef.remove()
                 .then(() => {
                     exibirMensagemSucesso('Ficha de exercícios excluída com sucesso!');
@@ -728,6 +781,105 @@
                 });
         }
 
+        // Função para realizar o login do usuário
+        function realizarLogin() {
+            const email = emailInputLogin.value.trim();
+            const password = passwordInputLogin.value.trim();
+
+            if (email === '' || password === '') {
+                loginError.textContent = 'Por favor, preencha todos os campos.';
+                loginError.style.display = 'block';
+                return;
+            }
+
+            auth.signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    // Login bem-sucedido
+                    usuarioLogado = userCredential.user;
+                    loginContainer.style.display = 'none';
+                    cadastroContainer.style.display = 'none';
+                    formularioFicha.style.display = 'block';
+                    logoutButton.style.display = 'block';
+                    mostrarLoginButton.style.display = 'none';
+                    mostrarCadastroButton.style.display = 'none';
+                    carregarFichas(); // Carrega as fichas do usuário logado
+                    exibirMensagemSucesso('Login realizado com sucesso!');
+                })
+                .catch((error) => {
+                    // Tratar erros de login
+                    loginError.textContent = 'Erro ao realizar login: ' + error.message;
+                    loginError.style.display = 'block';
+                });
+        }
+
+        // Função para realizar o cadastro do usuário
+        function realizarCadastro() {
+            const nome = nomeInputCadastro.value.trim();
+            const email = emailInputCadastro.value.trim();
+            const password = passwordInputCadastro.value.trim();
+
+            if (nome === '' || email === '' || password === '') {
+                cadastroError.textContent = 'Por favor, preencha todos os campos.';
+                cadastroError.style.display = 'block';
+                return;
+            }
+
+            auth.createUserWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    // Cadastro bem-sucedido
+                    usuarioLogado = userCredential.user;
+
+                    // Salvar o nome do usuário no Realtime Database
+                    database.ref(`usuarios/${usuarioLogado.uid}/nome`).set(nome)
+                        .then(() => {
+                            cadastroContainer.style.display = 'none';
+                            loginContainer.style.display = 'none';
+                            formularioFicha.style.display = 'block';
+                            logoutButton.style.display = 'block';
+                            mostrarLoginButton.style.display = 'none';
+                            mostrarCadastroButton.style.display = 'none';
+                            carregarFichas();  // Carrega as fichas do usuário cadastrado
+                            exibirMensagemSucesso('Cadastro realizado com sucesso!');
+                        })
+                        .catch((error) => {
+                            cadastroError.textContent = 'Erro ao salvar nome do usuário: ' + error.message;
+                            cadastroError.style.display = 'block';
+                            // Excluir o usuário recém-criado do Auth
+                            userCredential.user.delete();
+                            usuarioLogado = null;
+                        });
+                })
+                .catch((error) => {
+                    // Tratar erros de cadastro
+                    cadastroError.textContent = 'Erro ao realizar cadastro: ' + error.message;
+                    cadastroError.style.display = 'block';
+                });
+        }
+
+        function realizarLogout() {
+            auth.signOut().then(() => {
+                usuarioLogado = null;
+                fichasContainer.innerHTML = '';
+                formularioFicha.style.display = 'none';
+                formularioExercicio.style.display = 'none';
+                loginContainer.style.display = 'none';
+                cadastroContainer.style.display = 'none';
+                mostrarLoginButton.style.display = 'block';
+                mostrarCadastroButton.style.display = 'block';
+                logoutButton.style.display = 'none';
+                emailInputLogin.value = '';
+                passwordInputLogin.value = '';
+                emailInputCadastro.value = '';
+                passwordInputCadastro.value = '';
+                nomeInputCadastro.value = '';
+                loginError.style.display = 'none';
+                cadastroError.style.display = 'none';
+            }).catch((error) => {
+                exibirMensagemErro('Erro ao realizar logout: ' + error.message);
+            });
+        }
+
+
         // Event listeners
         adicionarDiaButton.addEventListener('click', adicionarDia);
         formularioFicha.addEventListener('submit', salvarFicha);
@@ -737,18 +889,23 @@
             formularioFicha.style.display = 'block';
             editandoExercicioId = null;
         });
+        mostrarLoginButton.addEventListener('click', () => {
+            loginContainer.style.display = 'block';
+            cadastroContainer.style.display = 'none';
+            formularioFicha.style.display = 'none';
+            formularioExercicio.style.display = 'none';
+        });
 
-        // Recuperar o ID do usuário do localStorage (simulação de autenticação)
-        const usuarioId = localStorage.getItem('usuarioId');
-        if (!usuarioId) {
-            // Se o usuário não estiver logado, redirecione para a página de login (ou exiba uma mensagem)
-            alert('Por favor, faça login para acessar suas fichas de exercícios.');
-            // Substitua 'login.html' pelo caminho da sua página de login
-            window.location.href = 'login.html';
-        } else {
-            // Se o usuário estiver logado, carregue as fichas
-            carregarFichas();
-        }
+        mostrarCadastroButton.addEventListener('click', () => {
+            cadastroContainer.style.display = 'block';
+            loginContainer.style.display = 'none';
+            formularioFicha.style.display = 'none';
+            formularioExercicio.style.display = 'none';
+        });
+
+        loginButton.addEventListener('click', realizarLogin);
+        cadastroButton.addEventListener('click', realizarCadastro);
+        logoutButton.addEventListener('click', realizarLogout);
 
         // Função para alternar entre Dark Mode e Light Mode
         function toggleDarkMode() {
@@ -796,6 +953,32 @@
         toggleDarkModeButton.style.marginTop = '20px';
         toggleDarkModeButton.addEventListener('click', toggleDarkMode);
         appElement.appendChild(toggleDarkModeButton);
+
+        // Função para verificar o estado de autenticação do usuário
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                // Usuário está logado
+                usuarioLogado = user;
+                loginContainer.style.display = 'none';
+                cadastroContainer.style.display = 'none';
+                formularioFicha.style.display = 'block';
+                logoutButton.style.display = 'block';
+                mostrarLoginButton.style.display = 'none';
+                mostrarCadastroButton.style.display = 'none';
+                carregarFichas(); // Carrega as fichas do usuário logado
+            } else {
+                // Usuário não está logado
+                usuarioLogado = null;
+                fichasContainer.innerHTML = '';
+                formularioFicha.style.display = 'none';
+                formularioExercicio.style.display = 'none';
+                loginContainer.style.display = 'none';
+                cadastroContainer.style.display = 'none';
+                mostrarLoginButton.style.display = 'block';
+                mostrarCadastroButton.style.display = 'block';
+                logoutButton.style.display = 'none';
+            }
+        });
     </script>
 </body>
 </html>
