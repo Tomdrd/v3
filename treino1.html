@@ -13,6 +13,28 @@
       padding: 20px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
+    #dia-treino {
+      border: 1px solid #e6e3e333;
+      display: flex;
+      gap: 10px;
+      width: 100%;
+      padding: 10px; /* opcional, só pra dar um respiro nas bordas */
+      box-sizing: border-box;
+      border-radius: 8px;
+}
+
+#nomeTreino {
+  border: 1px solid #e6e3e333;
+  border-radius: 8px;
+}
+#diaSemana {
+  padding:  10px;
+  border: 1px solid #e6e3e333;
+  border-radius: 8px;
+  background-color:#1f1f1f;
+  color: #999;
+  margin: 5px;
+}
     .exercicio {
       border: 1px solid #e6e3e333;
       border-radius: 8px;
@@ -94,22 +116,13 @@
       padding: 5px;
       font-size: 14px;
 }
-#nomeTreino {
-  border: 1px solid #e6e3e333;
-  border-radius: 8px;
-  width: 70%; 
-  margin:10px 0 0 10px;
-}
-#diaSemana {
-  padding:  10px;
-  border: 1px solid #e6e3e333;
-  border-radius: 8px;
-}
+
   </style>
 </head>
 <body>
   <div class="treino-container">
     <h2>Ficha de Treino por Dia</h2>
+    <div id="dia-treino">
     <select id="diaSemana" onchange="trocarDia()">
       <option value="segunda">Segunda</option>
       <option value="terca">Terça</option>
@@ -120,7 +133,7 @@
       <option value="domingo">Domingo</option>
     </select>
     <input type="text" id="nomeTreino" placeholder="Nome do treino (ex: Treino A)" />
-
+  </div>
     <div id="exercicios"></div>
 
     <button onclick="adicionarExercicio()">Adicionar</button>
