@@ -16,18 +16,16 @@
   </div>
 
   <script>
-
-
-const firebaseConfig = {
-  apiKey: "AIzaSyDoDuXxhXa58BSfBtJUUItbk7s9YmlBOGo",
-  authDomain: "meuprojetosaude-54d64.firebaseapp.com",
-  databaseURL: "https://meuprojetosaude-54d64-default-rtdb.firebaseio.com",
-  projectId: "meuprojetosaude-54d64",
-  storageBucket: "meuprojetosaude-54d64.firebasestorage.app",
-  messagingSenderId: "105539186714",
-  appId: "1:105539186714:web:c5286a9a3f5b4bc8c161a3",
-  measurementId: "G-HF1H65STC1"
-};
+    const firebaseConfig = {
+      apiKey: "AIzaSyDoDuXxhXa58BSfBtJUUItbk7s9YmlBOGo",
+      authDomain: "meuprojetosaude-54d64.firebaseapp.com",
+      databaseURL: "https://meuprojetosaude-54d64-default-rtdb.firebaseio.com",
+      projectId: "meuprojetosaude-54d64",
+      storageBucket: "meuprojetosaude-54d64.firebasestorage.app",
+      messagingSenderId: "105539186714",
+      appId: "1:105539186714:web:c5286a9a3f5b4bc8c161a3",
+      measurementId: "G-HF1H65STC1"
+    };
 
     firebase.initializeApp(firebaseConfig);
 
@@ -42,9 +40,13 @@ const firebaseConfig = {
               lista.innerHTML = "";
               snapshot.forEach(child => {
                 const treino = child.val();
+                const treinoId = child.key;
                 const div = document.createElement("div");
                 div.classList.add("treino-card");
-                div.innerHTML = `<h3>${treino.nome}</h3><p><strong>Data:</strong> ${treino.data}</p>`;
+                div.innerHTML = `
+                  <h3>${treino.nome}</h3>
+                  <p><strong>Data:</strong> ${treino.data}</p>
+                `;
                 treino.exercicios.forEach(ex => {
                   div.innerHTML += `
                     <div class="exercicio">
@@ -55,14 +57,45 @@ const firebaseConfig = {
                     </div>
                     <hr>`;
                 });
+
+                // Botões de ação
+                const btnEditar = document.createElement("button");
+                btnEditar.textContent = "Editar";
+                btnEditar.onclick = () => editarTreino(uid, treinoId);
+
+                const btnExcluir = document.createElement("button");
+                btnExcluir.textContent = "Excluir";
+                btnExcluir.onclick = () => excluirTreino(uid, treinoId);
+
+                div.appendChild(btnEditar);
+                div.appendChild(btnExcluir);
+
                 lista.appendChild(div);
               });
             });
         } else {
           alert("Você precisa estar logado para acessar o perfil.");
-          window.location.href = "/v3/login.html"; // redireciona para login se não estiver logado
+          window.location.href = "/v3/login.html";
         }
       });
+    }
+
+    function excluirTreino(uid, treinoId) {
+      if (confirm("Tem certeza que deseja excluir este treino?")) {
+        firebase.database().ref(`treinos/${uid}/${treinoId}`).remove()
+          .then(() => {
+            alert("Treino excluído com sucesso.");
+            carregarPerfil();
+          })
+          .catch(error => console.error("Erro ao excluir treino:", error));
+      }
+    }
+
+    function editarTreino(uid, treinoId) {
+      // Aqui você pode implementar a lógica para carregar o treino em um formulário para edição
+      // Exemplo simples: salvar o ID no localStorage e redirecionar
+      localStorage.setItem("treinoEditandoId", treinoId);
+      window.location.href = "/v3/editar-treino.html";
     }
   </script>
 </body>
