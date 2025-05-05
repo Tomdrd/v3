@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+  
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Ficha de Treino</title>
@@ -118,6 +119,7 @@
 }
 
   </style>
+  
 </head>
 <body>
   <div class="treino-container">
@@ -134,15 +136,22 @@
     </select>
     <input type="text" id="nomeTreino" placeholder="Nome do treino (ex: Treino A)" />
   </div>
-    <div id="exercicios"></div>
-
+  <div class="button-container">
     <button onclick="adicionarExercicio()">Adicionar</button>
-    <button onclick="marcarTodos()">Todos concluído</button>
-    <button onclick="finalizarTreino()">Finalizar</button>
-    <button onclick="salvarTreino()">Salvar</button>
     <button onclick="editarTreino()">Editar</button>
+    <button onclick="salvarTreino()">Salvar</button>
     <button onclick="novoTreino()">Novo</button>
+  </div>
 
+    <div id="exercicios"></div>
+    <div class="button-container">
+      <button onclick="marcarTodos()">Todos concluído</button>
+      <button onclick="finalizarTreino()">Finalizar</button>
+    </div>
+
+    
+    
+   
     <p id="mensagemParabens"></p>
   </div>
 
